@@ -1,0 +1,72 @@
+.navTab {
+  background-color: #073042;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 18px 70px 18px;
+}
+
+.navTab__box {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.28;
+  display: flex;
+  align-items: center;
+}
+
+.navTab__signup {
+  background: none;
+  border: none;
+  color: #fff;
+  margin-right: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navTab__signin {
+  width: 76px;
+  height: 32px;
+  border: none;
+  border-radius: 3px;
+  background: #3DDC84;
+  color: #000;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  padding: 0;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .navTab {
+    padding: 18px 30px 18px;
+  }
+
+  .navTab__box {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 425px) {
+  .navTab {
+    padding: 18px 14px 18px;
+  }
+
+  .navTab__signup {
+    margin-right: 14px;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  .navTab__signin {
+    width: 54px;
+    height: 26px;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+}
