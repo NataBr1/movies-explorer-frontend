@@ -5,7 +5,12 @@ function SearchForm() {
   return (
     <div className="searchForm">
       <form className="searchForm__field">
-        <input className="searchForm__title" placeholder="Фильм" />
+        <input
+          className="searchForm__input"
+          placeholder="Фильм"
+          type="text"
+          required
+        />
         <button className="searchForm__button" />
       </form>
       <div className="searchForm__switch">

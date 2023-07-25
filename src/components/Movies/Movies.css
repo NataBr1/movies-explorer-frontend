@@ -1,5 +1,38 @@
 .movies {
+  box-sizing: border-box;
   margin: 0 auto;
   max-width: 1280px;
+  min-height: 100vh;
   position: relative;
 }
+
+.movies__more {
+  border: 1px solid #424242;
+  background: none;
+  color: #fff;
+  border-radius: 3px;
+  width: 320px;
+  height: 36px;
+  padding: 0;
+  display: block;
+  margin: 0 auto 80px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 0.91px;
+}
+
+.movies__more:hover {
+  cursor: pointer;
+  opacity: .7;
+  transition: .2s ease-in;
+}
+
+@media (max-width: 425px) {
+
+  .movies__more {
+    width: 240px;
+    margin: 0 auto 80px;
+    font-size: 12px;
+  }
+}
+

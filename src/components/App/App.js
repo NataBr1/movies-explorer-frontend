@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { Routes, Route } from 'react-router-dom'
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -27,15 +28,48 @@ function App() {
 
   return (
     <div className="page">
-      <Main />
-      <Movies isPopupMenu={isPopupMenu} closePopup={closePopup} handlePopupMenuClick={handlePopupMenuClick} />
-      <SavedMovies isPopupMenu={isPopupMenu} closePopup={closePopup} handlePopupMenuClick={handlePopupMenuClick} />
-      <Profile isOpen={isPopupEditProfile} onClickOpen={handlePopupEditProfile} onClickClose={closePopup} />
-      <Register />
-      <Login />
-      <Error />
+
+      <Routes>
+
+        <Route path="/" element={
+          <Main />
+        } />
+
+        <Route path="/movies" element={
+          <Movies isOpen={isPopupMenu} onClose={closePopup} onClick={handlePopupMenuClick} />
+        } />
+
+        <Route path="/saved-movies" element={
+          <SavedMovies isOpen={isPopupMenu} onClose={closePopup} onClick={handlePopupMenuClick} />
+        } />
+
+        <Route path="/profile" element={
+          <Profile
+            isOpenEditProfile={isPopupEditProfile}
+            onCloseEditProfile={closePopup}
+            onClickEditProfile={handlePopupEditProfile}
+            isOpen={isPopupMenu}
+            onClose={closePopup}
+            onClick={handlePopupMenuClick} />
+        } />
+
+        <Route path="/signin" element={
+          <Login />
+        } />
+
+        <Route path="/signup" element={
+          <Register />
+        } />
+
+        <Route path="*" element={
+          <Error />
+        } />
+
+      </Routes>
+
     </div>
   );
+
 };
 
 export default App;

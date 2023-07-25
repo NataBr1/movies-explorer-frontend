@@ -7,7 +7,6 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer';
 import Portfolio from '../Portfolio/Portfolio';
-//import { Link } from "react-router-dom";
 
 function Main() {
   return (

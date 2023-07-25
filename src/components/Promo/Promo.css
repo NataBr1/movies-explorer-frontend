@@ -1,7 +1,6 @@
 .promo {
   background-color: #073042;
-  padding: 75px 70px 0;
-  min-height: 524px;
+  padding: 75px 70px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

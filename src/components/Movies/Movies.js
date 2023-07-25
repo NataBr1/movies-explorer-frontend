@@ -6,15 +6,17 @@ import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css';
 import React from "react";
 
-function Movies({ isPopupMenu, closePopup, handlePopupMenuClick }) {
+function Movies({ isOpen, onClose, onClick }) {
 
   return (
     <section className="movies">
-      <PopupMenu isOpen={isPopupMenu} onClose={closePopup} />
-      <Header onOpenPopupMenu={handlePopupMenuClick} />
+      <PopupMenu isOpen={isOpen} onClose={onClose} />
+      <Header onClick={onClick} />
       <SearchForm />
       <MoviesCardList />
+      <button className="movies__more" area-label="Ещё" type="submit">Ещё</button>
       <Footer />
+
     </section>
 
   );

@@ -1,7 +1,7 @@
 import './NavTab.css'
 import React from "react";
 import logo from '../../images/logo_promo.svg';
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NavTab({ onOpenPopupMenu }) {
   return (
@@ -13,8 +13,8 @@ function NavTab({ onOpenPopupMenu }) {
         />
 
         <div className="navTab__box">
-          <button className="navTab__signup">Регистрация</button>
-          <button className="navTab__signin">Войти</button>
+          <Link to="/signup" className="navTab__signup">Регистрация</Link>
+          <Link to="/signin" className="navTab__signin">Войти</Link>
         </div>
 
     </header>

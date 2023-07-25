@@ -1,11 +1,21 @@
 .login {
   margin: 0 auto;
   max-width: 396px;
-  padding: 70px 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .login__logo {
   margin-bottom: 40px;
+  width: 38px;
+}
+
+.login__logo:hover {
+  cursor: pointer;
+  opacity: .7;
+  transition: .2s ease-in;
 }
 
 .login__title {
@@ -63,6 +73,7 @@
 .login__button:hover {
   cursor: pointer;
   background: rgba(66, 133, 244, 0.8);
+  transition: .2s ease-in;
 }
 
 .login__text {
@@ -78,18 +89,16 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 1.21;
+  text-decoration: none;
 }
 
 .login__link:hover {
   cursor: pointer;
   opacity: 0.7;
+  transition: .2s ease-in;
 }
 
 @media (max-width: 768px) {
-  .login {
-    padding: 232px 0;
-  }
-
   .login__button {
     margin-top: 220px;
   }
@@ -97,7 +106,7 @@
 
 @media (max-width: 425px) {
   .login {
-    padding: 56px 30px 30px;
+    padding: 0 30px;
   }
 
   .login__logo {

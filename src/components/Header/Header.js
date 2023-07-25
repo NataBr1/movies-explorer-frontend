@@ -1,29 +1,20 @@
-import './Header.css'
+import './Header.css';
 import React from "react";
-import logo from '../../images/logo_promo.svg';
-//import { Link } from "react-router-dom";
+import Navigation from '../Navigation/Navigation';
+import { Link } from 'react-router-dom';
+import logo from "../../images/logo_promo.svg"
 
-function Header({ onOpenPopupMenu }) {
+function Header({ onClick }) {
   return (
+
     <header className="header">
-        <img
-          className="header__logo"
-          src={logo}
-          alt="Изображение логотипа"
-        />
+        <Link className="header__logo" to="/">
+          <img src={logo} alt="Изображение логотипа" />
+        </Link>
 
-        <div className="header__navigation">
-          <p className="movies-all">Фильмы</p>
-          <p className="movies-save">Сохраненные фильмы</p>
-          <button className="header__button">Аккаунт</button>
-        </div>
+        <Navigation />
 
-        <button className="header__burger" onClick={onOpenPopupMenu} ></button>
-
-        {/* <div className="header__navigation_main">
-          <button className="signup_main">Регистрация</button>
-          <button className="signin_main">Войти</button>
-        </div> */}
+        <button className="header__burger" onClick={onClick} ></button>
 
     </header>
   )
