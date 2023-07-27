@@ -7,13 +7,13 @@ import React from "react";
 
 function Profile ({ onClick, isOpen, onClose, onClickEditProfile, isOpenEditProfile, onCloseEditProfile }) {
   return (
-    <section className="profile">
+    <main className="profile">
       <PopupMenu isOpen={isOpen} onClose={onClose} />
       <Header onClick={onClick} />
 
-      <h2 className="profile__title">Привет, Наталья!</h2>
+      <h1 className="profile__title">Привет, Наталья!</h1>
 
-      <div className="profile__box">
+      <section className="profile__box">
 
         <PopupEditProfile isOpen={isOpenEditProfile} onClose={onCloseEditProfile}/>
 
@@ -26,13 +26,13 @@ function Profile ({ onClick, isOpen, onClose, onClickEditProfile, isOpenEditProf
             <p className="profile__span">E&#8209;mail</p>
             <p className="profile__name">pochta@yandex.ru</p>
           </div>
-          <button className="profile__edit" onClick={onClickEditProfile}>Редактировать</button>
-          <Link to="/" className="profile__exit">Выйти из аккаунта</Link>
+          <button className="profile__edit" type="button" onClick={onClickEditProfile}>Редактировать</button>
+          <button className="profile__exit" type="button"><Link to="/" className="buttonExit__text">Выйти из аккаунта</Link></button>
         </div>
 
-      </div>
+      </section>
 
-    </section>
+    </main>
   )
 }
 

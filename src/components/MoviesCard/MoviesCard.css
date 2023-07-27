@@ -54,7 +54,7 @@
 }
 
 .moviesCard__button_active {
-  background: url('../../images/button_moviesCard.png');
+  background: url('../../images/button_moviesCard.svg');
   grid-area: 3 / 1 / 4 / 4;
   margin: 0 auto;
   border: none;
@@ -68,7 +68,7 @@
 }
 
 .moviesCard__button_delete {
-  background: url('../../images/movies_delete.png');
+  background: url('../../images/button_deleteCard.svg');
   grid-area: 3 / 1 / 4 / 4;
   margin: 0 auto;
   color: #fff;
@@ -85,10 +85,11 @@
 .moviesCard__button:hover {
   cursor: pointer;
   background: rgba(49, 49, 49, .8);
+  opacity: .7;;
 }
 
 .moviesCard__button_active:hover {
-  background: url('../../images/button_moviesCard.png');
+  background: url('../../images/button_moviesCard.svg');
   cursor: pointer;
   opacity: .8;
 }

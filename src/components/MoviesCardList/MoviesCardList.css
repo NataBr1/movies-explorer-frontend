@@ -4,12 +4,17 @@
   justify-items: center;
   gap: 32px 28px;
   grid-template-columns: repeat(auto-fill,minmax(360px,1fr));
-  padding: 70px 70px 60px;
+  padding: 70px 70px 10px;
+}
+
+.moviesCardList__list {
+  padding: 0;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
   .moviesCardList {
-    padding: 0 30px 91px;
+    padding: 0 30px 30px;
     gap: 35px 24px;
     grid-template-columns: repeat(auto-fill,minmax(342px,1fr));
   }
@@ -17,7 +22,7 @@
 
 @media (max-width: 425px) {
   .moviesCardList {
-    padding: 40px 10px 80px;
+    padding: 40px 10px 30px;
     gap: 16px;
     grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
   }

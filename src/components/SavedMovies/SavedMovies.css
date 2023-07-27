@@ -3,4 +3,16 @@
   max-width: 1280px;
   min-height: 100vh;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.savedMovies__box {
+  padding-bottom: 220px;
+}
+
+@media (max-width: 768px) {
+  .savedMovies__box {
+    padding-bottom: 140px;
+  }
 }

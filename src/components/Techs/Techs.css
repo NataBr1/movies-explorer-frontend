@@ -37,8 +37,8 @@
 .techs__list {
   display: flex;
   justify-content: center;
-  margin-top: 0;
   padding: 0;
+  margin: 0;
 }
 
 .techs__element {
@@ -129,9 +129,12 @@
     margin-bottom: 22px;
   }
 
+  .techs__text {
+    margin-bottom: 50px;
+  }
+
   .element__text {
     font-size: 11px;
     letter-spacing: -0.44px;
-    margin-bottom: 50px;
   }
 }

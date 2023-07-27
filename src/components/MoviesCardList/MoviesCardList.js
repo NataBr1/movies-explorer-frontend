@@ -7,7 +7,10 @@ function MoviesCardList() {
   return (
     <>
       <section className="moviesCardList">
-        < MoviesCard/>
+        <ul className="moviesCardList__list">
+          <MoviesCard/>
+        </ul>
+
       </section>
     </>
   )

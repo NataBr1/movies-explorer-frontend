@@ -4,7 +4,7 @@ import React from "react";
 
 function Navigation() {
   return (
-    <div className="navigation">
+    <nav className="navigation">
       <NavLink to="/movies" className={({ isActive }) => isActive
               ? "navigation__link navigation__link_active"
               : "navigation__link"
@@ -14,8 +14,8 @@ function Navigation() {
               ? "navigation__link navigation__link_active"
               : "navigation__link"
               }>Сохраненные фильмы</NavLink>
-      <Link to="/profile" className="navigation__button">Аккаунт</Link>
-    </div>
+      <button className="navigation__button" type="button"><Link to="/profile" className="button__text">Аккаунт</Link></button>
+    </nav>
   )
 }
 

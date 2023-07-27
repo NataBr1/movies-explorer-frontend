@@ -29,7 +29,7 @@
 
 .popupEditProfile__field:nth-child(2) {
   border-bottom: none;
-  padding-bottom: 220px;
+  padding-bottom: 166px;
 }
 
 .popupEditProfile__span {
@@ -38,7 +38,7 @@
   font-weight: 500;
 }
 
-.popupEditProfile__name {
+.popupEditProfile__input {
   color: #FFF;
   font-size: 11px;
   font-weight: 500;
@@ -47,6 +47,24 @@
   width: 100%;
   text-align: right;
   padding: 0;
+}
+
+.popupEditProfile__input:focus {
+  outline: 0;
+  opacity: .8;
+}
+
+.popupEditProfile__box-error {
+  min-height: 34px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.popupEditProfile__text-error {
+  color: #FF004C;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
 }
 
 .popupEditProfile__save {
@@ -59,9 +77,14 @@
   color: #FFF;
   font-size: 13px;
   font-weight: 400;
-  margin: 0 auto 16px;
   padding: 0;
   cursor: pointer;
+}
+
+.popupEditProfile__save_inactive {
+  background: #F8F8F8;
+  color: #C2C2C2;
+  pointer-events: none;
 }
 
 .popupEditProfile__save:hover {
@@ -70,7 +93,7 @@
 
 @media (max-width: 768px) {
   .popupEditProfile__field:nth-child(2) {
-    padding-bottom: 210px;
+    padding-bottom: 156px;
   }
 }
 
@@ -86,7 +109,7 @@
   }
 
   .popupEditProfile__field:nth-child(2) {
-    padding-bottom: 379px;
+    padding-bottom: 325px;
   }
 
   .popupEditProfile__save {

@@ -13,19 +13,17 @@ function MoviesCard() {
   }
 
   return (
-    <>
-        <article className="moviesCard">
-          <h2 className="moviesCard__title">В погоне за Бенкси</h2>
-          <p className="moviesCard__diration">27 минут</p>
-          <img className="moviesCard__image" src={img} alt="Карточка"/>
-          {location.pathname === "/movies" ? (
-            <button className={`moviesCard__button ${isSaveMovie ? "" : "moviesCard__button_active"}`} type="button" onClick={handleToggleButton}>{`${isSaveMovie ? "Сохранить" : ""}`}</button>
-          ) : (
-            <button className="moviesCard__button_delete" type="button"></button>
-          )}
-        </article>
-    </>
-)
+    <li className="moviesCard">
+      <h2 className="moviesCard__title">В погоне за Бенкси</h2>
+      <p className="moviesCard__diration">27 минут</p>
+      <img className="moviesCard__image" src={img} alt={"Название фильма"}/>
+      {location.pathname === "/movies" ? (
+        <button className={`moviesCard__button ${isSaveMovie ? "" : "moviesCard__button_active"}`} type="button" onClick={handleToggleButton}>{`${isSaveMovie ? "Сохранить" : ""}`}</button>
+      ) : (
+        <button className="moviesCard__button_delete" type="button"></button>
+      )}
+    </li>
+  )
 }
 
 export default MoviesCard;

@@ -61,7 +61,9 @@
 }
 
 .aboutMe__link:hover {
+  cursor: pointer;
   opacity: 0.7;
+
 }
 
 @media (max-width: 768px) {
@@ -109,6 +111,7 @@
   }
 
   .aboutMe__photo {
+    height: 352px;
     margin-bottom: 40px;
   }
 

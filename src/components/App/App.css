@@ -5,3 +5,11 @@
   margin: 0 auto;
   min-height: 100vh;
 }
+
+.sticky__content {
+  flex: 1 0 auto;
+}
+
+.sticky__footer {
+  flex-shrink: 0;
+}

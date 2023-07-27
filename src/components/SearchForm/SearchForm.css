@@ -69,6 +69,10 @@
   transition: .4s;
 }
 
+.slider:hover {
+  background-color: rgba(52, 52, 52, 1);
+}
+
 .slider:before {
   position: absolute;
   content: "";
@@ -106,7 +110,7 @@
 
 @media (max-width: 768px) {
   .searchForm {
-    padding: 80px 30px 131px;
+    padding: 80px 30px 120px;
   }
 
   .searchForm__switch {

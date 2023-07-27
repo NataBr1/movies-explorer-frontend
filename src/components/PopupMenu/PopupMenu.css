@@ -34,7 +34,12 @@
     position: absolute;
     top: 22.4px;
     right: 22.4px;
+  }
+
+  .popupMenu__close:hover {
+    opacity: .7;
     cursor: pointer;
+    transition: .2s ease-in;
   }
 
   .popupMenu__navigation {
@@ -70,24 +75,25 @@
 
   .popupMenu__button {
     background-color: #313131;
-    color: #fff;
     border-radius: 20px;
+    border: none;
     width: 100px;
     height: 32px;
-    padding-top: 8px;
-    padding-left: 20px;
-    box-sizing: border-box;
-    text-decoration: none;
     margin: 0 auto;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+    padding: 0;
   }
 
   .popupMenu__button:hover {
-    background-color: rgba(49, 49, 49, .8);
+    opacity: .7;
     cursor: pointer;
     transition: .2s ease-in;
+  }
+
+  .popupMenu__button-text {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
   }
 }
 

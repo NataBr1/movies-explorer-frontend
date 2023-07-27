@@ -6,7 +6,6 @@
 
 .profile__title {
   color: #FFF;
-  font-family: Inter;
   font-size: 24px;
   font-weight: 500;
   padding: 74px 0 123px;
@@ -82,16 +81,20 @@
 
 .profile__exit {
   background: none;
-  text-decoration: none;
+  border: none;
   display: block;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.buttonExit__text {
   color: rgba(238, 52, 101, 1);
-  text-align: center;
-  font-family: Inter;
+  text-decoration: none;
   font-size: 13px;
   font-weight: 500;
 }
 
-.profile__exit:hover {
+.buttonExit__text:hover {
   cursor: pointer;
   color: rgba(238, 52, 101, 0.7);
   transition: .2s ease-in;
@@ -138,7 +141,7 @@
     font-size: 11px;
   }
 
-  .profile__exit {
+  .buttonExit__text {
     font-size: 12px;
   }
 }

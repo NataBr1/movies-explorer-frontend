@@ -2,7 +2,7 @@ import './Header.css';
 import React from "react";
 import Navigation from '../Navigation/Navigation';
 import { Link } from 'react-router-dom';
-import logo from "../../images/logo_promo.svg"
+import logo from "../../images/logo.svg"
 
 function Header({ onClick }) {
   return (
@@ -14,7 +14,7 @@ function Header({ onClick }) {
 
         <Navigation />
 
-        <button className="header__burger" onClick={onClick} ></button>
+        <button className="header__burger" type="button" onClick={onClick} ></button>
 
     </header>
   )

@@ -1,9 +1,9 @@
 import './NavTab.css'
 import React from "react";
-import logo from '../../images/logo_promo.svg';
+import logo from '../../images/logo.svg';
 import { Link } from "react-router-dom";
 
-function NavTab({ onOpenPopupMenu }) {
+function NavTab() {
   return (
     <header className="navTab">
         <img
@@ -12,10 +12,10 @@ function NavTab({ onOpenPopupMenu }) {
           alt="Изображение логотипа"
         />
 
-        <div className="navTab__box">
+        <nav className="navTab__box">
           <Link to="/signup" className="navTab__signup">Регистрация</Link>
-          <Link to="/signin" className="navTab__signin">Войти</Link>
-        </div>
+          <button className="navTab__signin" type="button"><Link to="/signin" className="signin__link">Войти</Link></button>
+        </nav>
 
     </header>
   )

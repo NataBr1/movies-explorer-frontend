@@ -9,15 +9,21 @@ import React from "react";
 function Movies({ isOpen, onClose, onClick }) {
 
   return (
-    <section className="movies">
-      <PopupMenu isOpen={isOpen} onClose={onClose} />
-      <Header onClick={onClick} />
-      <SearchForm />
-      <MoviesCardList />
-      <button className="movies__more" area-label="Ещё" type="submit">Ещё</button>
-      <Footer />
+    <main className="movies">
+      <div className="sticky__content">
+        <PopupMenu isOpen={isOpen} onClose={onClose} />
+        <Header onClick={onClick} />
+        <SearchForm />
+        <MoviesCardList />
+        <div className="movies__button-box">
+          <button className="movies__more" type="button">Ещё</button>
+        </div>
+      </div>
+      <div className="sticky__footer">
 
-    </section>
+        <Footer />
+      </div>
+    </main>
 
   );
 };
