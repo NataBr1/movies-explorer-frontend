@@ -55,12 +55,24 @@
   transform: scale(1.01);
 }
 
+.login__input_error {
+  color: #EE3465;
+}
+
 .login__input-error {
   color: #EE3465;
   font-size: 10px;
   font-weight: 400;
   min-height: 10px;
+  visibility: hidden;
+  opacity: 0;
 }
+
+.register__input-error_active {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 .login__box-error {
   min-height: 34px;

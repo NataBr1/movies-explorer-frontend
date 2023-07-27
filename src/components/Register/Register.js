@@ -18,7 +18,8 @@ function Register () {
                     className="register__input"
                     name="name"
                     type="text"
-                    placeholder={"Наталья"}
+                    defaultValue={"Наталья"}
+                    placeholder="Введите имя"
                     autoComplete="off"
                     minLength={2}
                     maxLength={30}
@@ -32,7 +33,8 @@ function Register () {
                     className="register__input"
                     name="email"
                     type="email"
-                    placeholder={"pochta@yandex.ru"}
+                    defaultValue={"pochta@yandex.ru"}
+                    placeholder="Введите свой e-mail"
                     autoComplete="off"
                     minLength={2}
                     maxLength={30}
@@ -46,9 +48,8 @@ function Register () {
                     className="register__input"
                     name="password"
                     type="password"
-                    placeholder="Пароль"
+                    placeholder="Введите пароль"
                     autoComplete="off"
-                    value="пароль"
                     required
                   />
                   <span className="register__input-error">Что-то пошло не так...</span>

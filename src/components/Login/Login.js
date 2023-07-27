@@ -21,7 +21,8 @@ function Login () {
                     className="login__input"
                     name="email"
                     type="email"
-                    placeholder={"pochta@yandex.ru"}
+                    defaultValue={"pochta@yandex.ru"}
+                    placeholder="Введите свой e-mail"
                     autoComplete="off"
                     minLength={2}
                     maxLength={30}
@@ -35,7 +36,7 @@ function Login () {
                     className="login__input"
                     name="password"
                     type="password"
-                    placeholder={"Пароль"}
+                    placeholder="Введите пароль"
                     autoComplete="off"
                     minLength={2}
                     maxLength={30}

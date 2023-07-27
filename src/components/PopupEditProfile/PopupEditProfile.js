@@ -3,14 +3,15 @@ import React from "react";
 
 function PopupEditProfile({ isOpen, onClick }) {
   return (
-   <section className={`popupEditProfile ${isOpen ? "popupEditProfile_opened": ""}`} isOpen={isOpen} >
+   <section className={`popupEditProfile ${isOpen ? "popupEditProfile_opened": ""}`} >
       <form className="popupEditProfile__form">
         <label className="popupEditProfile__field">
           <span className="popupEditProfile__span">Имя</span>
           <input
             className="popupEditProfile__input"
             type="text"
-            placeholder={"Наталья"}
+            defaultValue={"Наталья"}
+            placeholder="Введите имя"
             autoComplete="off"
             minLength={2}
             maxLength={30}
@@ -22,7 +23,8 @@ function PopupEditProfile({ isOpen, onClick }) {
           <input
             className="popupEditProfile__input"
             type="email"
-            placeholder={"pochta@yandex.ru"}
+            defaultValue={"pochta@yandex.ru"}
+            placeholder="Введите свой e-mail"
             autoComplete="off"
             minLength={2}
             maxLength={30}

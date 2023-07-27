@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 function PopupMenu({ isOpen, onClose }) {
   return (
-   <section className={`popupMenu ${isOpen ? "popupMenu_opened": ""}`} isOpen={isOpen} >
+   <section className={`popupMenu ${isOpen ? "popupMenu_opened": ""}`} >
       <button className="popupMenu__close" tyoe="button" onClick={onClose} />
 
       <div className="popupMenu__box">
