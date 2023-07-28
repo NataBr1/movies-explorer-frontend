@@ -54,7 +54,7 @@
   margin-right: 0;
 }
 
-.element__text {
+.techs__element-text {
   color: #FFF;
   font-size: 14px;
   font-weight: 400;
@@ -87,7 +87,7 @@
     height: 57px;
   }
 
-  .element__text {
+  .techs__element-text {
     font-size: 12px;
   }
 }
@@ -133,7 +133,7 @@
     margin-bottom: 50px;
   }
 
-  .element__text {
+  .techs__element-text {
     font-size: 11px;
     letter-spacing: -0.44px;
   }

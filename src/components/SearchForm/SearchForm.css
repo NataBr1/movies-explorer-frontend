@@ -11,13 +11,18 @@
 }
 
 .searchForm__input {
-  color: #8B8B8B;
+  color: #fff;
   font-size: 28px;
   font-weight: 500;
   margin: 0;
+  padding: 0;
   background: none;
   border: none;
   width: 100%;
+}
+
+.searchForm__input:focus {
+  outline: 0;
 }
 
 .searchForm__button {
@@ -128,7 +133,7 @@
 
 @media (max-width: 320px) {
   .searchForm {
-    padding: 90px 14px 50px;
+    padding: 84px 14px 50px;
   }
 
   .searchForm__switch {
@@ -137,7 +142,12 @@
 
   .searchForm__input {
     font-size: 18px;
-    margin-bottom: 15px;
+    line-height: 1.63;
+    margin-right: 13px;
+  }
+
+  .switch__name {
+    font-size: 11px;
   }
 
   .searchForm__field {

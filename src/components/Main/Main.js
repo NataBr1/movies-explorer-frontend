@@ -10,15 +10,17 @@ import Portfolio from '../Portfolio/Portfolio';
 
 function Main() {
   return (
-    <main className="main">
+    <div className="main">
       <NavTab />
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main>
+        <Promo />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
       <Footer />
-    </main>
+    </div>
   )
 }
 

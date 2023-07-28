@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 function Register () {
   return (
     <main className="register">
+      
        <Link to="/">
           <img className="register__logo" src={logo} alt="Изображение логотипа" />
         </Link>
@@ -36,7 +37,7 @@ function Register () {
                     defaultValue={"pochta@yandex.ru"}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
-                    minLength={2}
+                    minLength={6}
                     maxLength={30}
                     required
                   />
@@ -50,6 +51,8 @@ function Register () {
                     type="password"
                     placeholder="Введите пароль"
                     autoComplete="off"
+                    minLength={6}
+                    maxLength={30}
                     required
                   />
                   <span className="register__input-error">Что-то пошло не так...</span>

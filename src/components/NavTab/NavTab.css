@@ -44,15 +44,14 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 1.33;
+  color: #000;
+  text-decoration: none;
+  padding: 8px 0 0 20px;
+  box-sizing: border-box;
 }
 
 .navTab__signin:hover {
   background: rgba(61, 220, 132, 0.8);
-}
-
-.signin__link {
-  color: #000;
-  text-decoration: none;
 }
 
 @media (max-width: 768px) {
@@ -81,7 +80,6 @@
     height: 26px;
     font-size: 10px;
     line-height: 1.6;
-    padding-top: 5px;
-    padding-left: 12px;
+    padding: 5px 12px 0 0;
   }
 }

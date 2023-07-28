@@ -17,7 +17,7 @@ function AboutMe() {
         </div>
 
         <div>
-          <img className="aboutMe__photo" src={photo} alt="Фотография студента"/>
+          <img className="aboutMe__photo" src={photo} alt="Фотография Натальи, фронтенд-разработчика, студенки Яндекс Практикум"/>
         </div>
       </div>
 

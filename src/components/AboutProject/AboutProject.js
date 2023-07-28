@@ -15,12 +15,12 @@ function AboutProject() {
       </div>
 
       <div className="aboutProject__time">
-        <div className="time__left"><p className="time__text">1 неделя</p></div>
-        <div className="time__right"><p className="time__text">4 недели</p></div>
-        <p className="time__signature backend">Back-end</p>
-        <p className="time__signature frontend">Front-end</p>
+        <div className="aboutProject__time-left"><p className="time-text">1 неделя</p></div>
+        <div className="aboutProject__time-right"><p className="time-text">4 недели</p></div>
+        <p className="time-signature backend">Back-end</p>
+        <p className="time-signature frontend">Front-end</p>
       </div>
-      
+
     </section>
   )
 }

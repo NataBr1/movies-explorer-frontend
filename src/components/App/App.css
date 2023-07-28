@@ -9,7 +9,3 @@
 .sticky__content {
   flex: 1 0 auto;
 }
-
-.sticky__footer {
-  flex-shrink: 0;
-}

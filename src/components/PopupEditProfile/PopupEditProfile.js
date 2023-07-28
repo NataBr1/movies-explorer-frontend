@@ -26,7 +26,7 @@ function PopupEditProfile({ isOpen, onClick }) {
             defaultValue={"pochta@yandex.ru"}
             placeholder="Введите свой e-mail"
             autoComplete="off"
-            minLength={2}
+            minLength={6}
             maxLength={30}
             required>
           </input>

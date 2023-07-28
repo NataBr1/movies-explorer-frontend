@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 function Login () {
   return (
     <main className="login">
-      <>
-
-      </>
+      
        <Link to="/">
           <img className="login__logo" src={logo} alt="Изображение логотипа" />
         </Link>
@@ -24,7 +22,7 @@ function Login () {
                     defaultValue={"pochta@yandex.ru"}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
-                    minLength={2}
+                    minLength={6}
                     maxLength={30}
                     required
                   />
@@ -38,7 +36,7 @@ function Login () {
                     type="password"
                     placeholder="Введите пароль"
                     autoComplete="off"
-                    minLength={2}
+                    minLength={6}
                     maxLength={30}
                     required
                   />

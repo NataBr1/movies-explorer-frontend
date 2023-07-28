@@ -1,8 +1,11 @@
 .footer {
   margin: 0 auto;
   padding: 79px 70px 20px;
-
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .footer__title {
   color: #8B8B8B;

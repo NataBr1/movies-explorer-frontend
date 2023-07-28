@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 function MoviesCard() {
   const location = useLocation();
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
+  const card = {alt:"Название фильма"}
 
   function handleToggleButton() {
     setIsSaveMovie(!isSaveMovie)
@@ -16,7 +17,7 @@ function MoviesCard() {
     <li className="moviesCard">
       <h2 className="moviesCard__title">В погоне за Бенкси</h2>
       <p className="moviesCard__diration">27 минут</p>
-      <img className="moviesCard__image" src={img} alt={"Название фильма"}/>
+      <img className="moviesCard__image" src={img} alt={card.alt} />
       {location.pathname === "/movies" ? (
         <button className={`moviesCard__button ${isSaveMovie ? "" : "moviesCard__button_active"}`} type="button" onClick={handleToggleButton}>{`${isSaveMovie ? "Сохранить" : ""}`}</button>
       ) : (

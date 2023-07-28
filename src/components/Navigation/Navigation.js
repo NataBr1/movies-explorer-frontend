@@ -14,7 +14,7 @@ function Navigation() {
               ? "navigation__link navigation__link_active"
               : "navigation__link"
               }>Сохраненные фильмы</NavLink>
-      <button className="navigation__button" type="button"><Link to="/profile" className="button__text">Аккаунт</Link></button>
+      <Link to="/profile" className="navigation__button">Аккаунт</Link>
     </nav>
   )
 }

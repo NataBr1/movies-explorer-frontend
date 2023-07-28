@@ -5,9 +5,9 @@ import { Link, NavLink } from 'react-router-dom';
 function PopupMenu({ isOpen, onClose }) {
   return (
    <section className={`popupMenu ${isOpen ? "popupMenu_opened": ""}`} >
-      <button className="popupMenu__close" tyoe="button" onClick={onClose} />
+      <button className="popupMenu__close" type="button" onClick={onClose} />
 
-      <div className="popupMenu__box">
+      <nav className="popupMenu__box">
         <ul className="popupMenu__navigation">
           <li className="popupMenu__item" onClick={onClose}>
             <Link to="/" className="popupMenu__link">Главная</Link>
@@ -26,9 +26,9 @@ function PopupMenu({ isOpen, onClose }) {
                     }>Сохраненные фильмы</NavLink>
           </li>
         </ul>
-      </div>
+      </nav>
 
-      <button className="popupMenu__button" type="button"><Link to="/profile" className="popupMenu__button-text" onClick={onClose}>Аккаунт</Link></button>
+      <Link to="/profile" className="popupMenu__button" onClick={onClose}>Аккаунт</Link>
    </section>
   )
 }

@@ -14,7 +14,7 @@ function NavTab() {
 
         <nav className="navTab__box">
           <Link to="/signup" className="navTab__signup">Регистрация</Link>
-          <button className="navTab__signin" type="button"><Link to="/signin" className="signin__link">Войти</Link></button>
+          <Link to="/signin" className="navTab__signin">Войти</Link>
         </nav>
 
     </header>

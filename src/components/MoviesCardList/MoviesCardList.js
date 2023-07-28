@@ -8,7 +8,7 @@ function MoviesCardList() {
     <>
       <section className="moviesCardList">
         <ul className="moviesCardList__list">
-          <MoviesCard/>
+          <MoviesCard />
         </ul>
 
       </section>

@@ -80,20 +80,18 @@
     width: 100px;
     height: 32px;
     margin: 0 auto;
-    padding: 0;
+    padding: 8px 0 0 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    box-sizing: border-box;
   }
 
   .popupMenu__button:hover {
     opacity: .7;
     cursor: pointer;
     transition: .2s ease-in;
-  }
-
-  .popupMenu__button-text {
-    color: #fff;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
   }
 }
 
