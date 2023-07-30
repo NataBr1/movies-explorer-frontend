@@ -104,7 +104,7 @@
   background-color: #fff;
 }
 
-.switch__name {
+.switch-name {
   margin: 0;
   color: #FFF;
   font-size: 13px;
@@ -126,7 +126,7 @@
     height: 34px;
   }
 
-  .switch__name {
+  .switch-name {
     margin-right: 16px;
   }
 }
@@ -146,7 +146,7 @@
     margin-right: 13px;
   }
 
-  .switch__name {
+  .switch-name {
     font-size: 11px;
   }
 

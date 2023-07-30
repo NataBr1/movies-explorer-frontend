@@ -67,7 +67,7 @@
   line-height: 0.91px;
 }
 
-.moviesCard__button_delete {
+.moviesCard__button-delete {
   background: url('../../images/button_deleteCard.svg');
   grid-area: 3 / 1 / 4 / 4;
   margin: 0 auto;
@@ -94,7 +94,7 @@
   opacity: .8;
 }
 
-.moviesCard__button_delete:hover {
+.moviesCard__button-delete:hover {
   cursor: pointer;
   opacity: .8;
 }

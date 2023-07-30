@@ -11,7 +11,7 @@ function Movies({ isOpen, onClose, onClick }) {
   return (
     <div className="movies">
       <Header onClick={onClick} />
-      <main className="sticky__content">
+      <main className="sticky-content">
         <PopupMenu isOpen={isOpen} onClose={onClose} />
         <SearchForm />
         <MoviesCardList />

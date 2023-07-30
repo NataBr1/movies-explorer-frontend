@@ -21,7 +21,7 @@ function MoviesCard() {
       {location.pathname === "/movies" ? (
         <button className={`moviesCard__button ${isSaveMovie ? "" : "moviesCard__button_active"}`} type="button" onClick={handleToggleButton}>{`${isSaveMovie ? "Сохранить" : ""}`}</button>
       ) : (
-        <button className="moviesCard__button_delete" type="button"></button>
+        <button className="moviesCard__button-delete" type="button"></button>
       )}
     </li>
   )

@@ -22,7 +22,7 @@ function SearchForm() {
               type="checkbox" />
           <span className="slider" />
         </label>
-        <h2 className="switch__name">Короткометражки</h2>
+        <h2 className="switch-name">Короткометражки</h2>
       </div>
 
     </section>
