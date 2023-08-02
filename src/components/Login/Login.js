@@ -3,28 +3,48 @@ import React from "react";
 import logo from '../../images/logo.svg';
 import { Link } from "react-router-dom";
 
-function Login () {
+function Login ({ handleLogin }) {
+  const [formValue, setFormValue] = React.useState({
+    email: '',
+    password: '',
+  })
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { email, password } = formValue;
+    handleLogin({ email, password });
+  }
+
   return (
     <main className="login">
-      
+
        <Link to="/">
           <img className="login__logo" src={logo} alt="Изображение логотипа" />
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
 
-          <form>
+          <form onSubmit={handleSubmit}>
               <label className="login__field">
                   <span className="login__span">E-mail</span>
                   <input
                     className="login__input"
                     name="email"
                     type="email"
-                    defaultValue={"pochta@yandex.ru"}
+                    value={formValue.email}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
                     minLength={6}
                     maxLength={30}
-                    required
+                    onChange={handleChange}
+
                   />
                   <span className="login__input-error" />
               </label>
@@ -34,11 +54,13 @@ function Login () {
                     className="login__input"
                     name="password"
                     type="password"
+                    value={formValue.password}
                     placeholder="Введите пароль"
                     autoComplete="off"
                     minLength={6}
                     maxLength={30}
-                    required
+                    onChange={handleChange}
+
                   />
                   <span className="login__input-error"></span>
               </label>
