@@ -4,39 +4,39 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useForm } from "../../hooks/useForm"
 
 function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
-  // const currentUser = React.useContext(CurrentUserContext);
-  // const {values, handleChange, setValues} = useForm({});
+  const currentUser = React.useContext(CurrentUserContext);
+  const {values, handleChange, setValues} = useForm({});
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+      onUpdateUser({
+      name: values.name,
+      email: values.email,
+    });
+  }
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   onUpdateUser({
-  //     name: values.name,
-  //     email: values.email,
-  //   });
-  // }
-
-  // React.useEffect(() => {
-  //   setValues({
-  //     name: currentUser.name,
-  //     email: currentUser.email
-  //   })
-  // }, [isOpen, currentUser]);
+  React.useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email
+    })
+  }, [isOpen, currentUser, setValues]);
 
   return (
    <section className={`popupEditProfile ${isOpen ? "popupEditProfile_opened": ""}`} >
-      <form className="popupEditProfile__form"  >
+      <form className="popupEditProfile__form" onSubmit={handleSubmit} noValidate >
         <label className="popupEditProfile__field">
           <span className="popupEditProfile__span">Имя</span>
           <input
             className="popupEditProfile__input"
             name="name"
             type="text"
-            defaultValue=""
+            defaultValue={currentUser.name}
             placeholder="Введите имя"
             autoComplete="off"
             minLength={2}
             maxLength={30}
-            // onChange={handleChange}
+            onChange={handleChange}
             required="">
           </input>
         </label>
@@ -46,12 +46,12 @@ function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
             className="popupEditProfile__input"
             name="email"
             type="email"
-            defaultValue=""
+            defaultValue={currentUser.email}
             placeholder="Введите свой e-mail"
             autoComplete="off"
             minLength={6}
             maxLength={30}
-            // onChange={handleChange}
+            onChange={handleChange}
             required="">
           </input>
         </label>

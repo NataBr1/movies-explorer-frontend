@@ -31,7 +31,7 @@ function Login ({ handleLogin }) {
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate >
               <label className="login__field">
                   <span className="login__span">E-mail</span>
                   <input
@@ -44,9 +44,9 @@ function Login ({ handleLogin }) {
                     minLength={6}
                     maxLength={30}
                     onChange={handleChange}
-
+                    required
                   />
-                  <span className="login__input-error" />
+                  <span className="login__input-error"></span>
               </label>
               <label className="login__field">
                   <span className="login__span">Пароль</span>
@@ -60,12 +60,12 @@ function Login ({ handleLogin }) {
                     minLength={6}
                     maxLength={30}
                     onChange={handleChange}
-
+                    required
                   />
                   <span className="login__input-error"></span>
               </label>
               <div className="login__box-error"><span className="login__text-error">{}</span></div>
-              <button className="login__button" type="submit">Войти</button>
+              <button className="login__button">Войти</button>
               <p className="login__text">Ещё не зарегистрированы? <Link to="/signup" className="login__link">Регистрация</Link></p>
           </form>
 
@@ -74,3 +74,6 @@ function Login ({ handleLogin }) {
 }
 
 export default Login;
+
+
+// {`login__button ${isValid ? "_disactive" : ""}`} type="submit" disabled={!isValid}

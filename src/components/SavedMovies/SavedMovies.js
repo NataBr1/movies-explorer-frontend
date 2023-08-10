@@ -6,18 +6,45 @@ import Footer from "../Footer/Footer";
 import './SavedMovies.css';
 import React from "react";
 
-function SavedMovies ({ isOpen, onClose, onClick, favoriteMovie }) {
+function SavedMovies ({
+  onClick,
+  isOpen,
+  onClose,
+  value,
+  setValue,
+  onSubmitSearch,
+  checkBox,
+  setCheckBox,
+  movies,
+  handleCardDelete
+}) {
 
   return (
     <div className="savedMovies">
+
       <Header onClick={onClick} classNameHeader={"header"} />
+
       <main className="sticky-content">
+
         <PopupMenu isOpen={isOpen} onClose={onClose} />
-        <SearchForm showFilmList={[]} />
-        <MoviesCardList movies={favoriteMovie} />
+
+        <SearchForm
+          value={value}
+          setValue={setValue}
+          onSubmitSearch={onSubmitSearch}
+          checkBox={checkBox}
+          setCheckBox={setCheckBox} />
+
+        <MoviesCardList
+          movies={movies}
+          handleCardDelete={handleCardDelete} />
+
         <div className="savedMovies__box" />
+
       </main>
+
       <Footer />
+
     </div>
 
   );

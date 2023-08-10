@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import './Navigation.css';
 import React from "react";
 
-function Navigation({ showFavoriteMovies }) {
+function Navigation() {
   return (
     <nav className="navigation">
       <NavLink to="/movies" className={({ isActive }) => isActive
@@ -13,7 +13,7 @@ function Navigation({ showFavoriteMovies }) {
       <NavLink to="/saved-movies" className={({ isActive }) => isActive
               ? "navigation__link navigation__link_active"
               : "navigation__link"
-              } onClick={showFavoriteMovies}>Сохраненные фильмы</NavLink>
+              }>Сохраненные фильмы</NavLink>
       <Link to="/profile" className="navigation__button">Аккаунт</Link>
     </nav>
   )

@@ -1,6 +1,6 @@
 class MainApi {
   constructor(options) {
-    this._baseUrl = options.baseUrl;
+    this._myUrl = options.myUrl;
     this._headers = options.headers;
   }
 
@@ -17,8 +17,9 @@ class MainApi {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
+  // Метод регистрации
   register = ( name, email, password ) => {
-    return this._request(`${this._baseUrl}/signup`, {
+    return this._request(`${this._myUrl}/signup`, {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
@@ -26,8 +27,9 @@ class MainApi {
     })
   };
 
+  //Метод авторизации
   authorize  = ( email, password ) => {
-    return this._request(`${this._baseUrl}/signin`, {
+    return this._request(`${this._myUrl}/signin`, {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
@@ -36,7 +38,7 @@ class MainApi {
   };
 
   checkToken = () => {
-    return this._request(`${this._baseUrl}/users/me`, {
+    return this._request(`${this._myUrl}/users/me`, {
       method: 'GET',
       headers: this._headers,
       credentials: 'include'
@@ -44,17 +46,17 @@ class MainApi {
   };
 
   //Метод возвращения информации о пользователе
-  // getUserInfo() {
-  //   return this._request(`${this._baseUrl}/users/me`, {
-  //     method: 'GET',
-  //     headers: this._headers,
-  //     credentials: 'include'
-  //   })
-  // }
+  getUserInfo() {
+    return this._request(`${this._myUrl}/users/me`, {
+      method: 'GET',
+      headers: this._headers,
+      credentials: 'include'
+    })
+  }
 
   //Метод обновления информации о пользователе
   setUserInfo(data) {
-    return this._request(`${this._baseUrl}/users/me`, {
+    return this._request(`${this._myUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
@@ -67,7 +69,7 @@ class MainApi {
 
   //Метод возвращения сохранённых текущим пользователем фильмов
   getFavoriteMovies() {
-    return this._request(`${this._baseUrl}/movies`, {
+    return this._request(`${this._myUrl}/movies`, {
       method: 'GET',
       headers: this._headers,
       credentials: 'include'
@@ -75,18 +77,30 @@ class MainApi {
   }
 
   //Метод добавления фильма в сохраненные
-  addCard(data) {
-    return this._request(`${this._baseUrl}/movies`, {
+  addCard(selectMovie) {
+    return this._request(`${this._myUrl}/movies`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        country: selectMovie.country,
+        director: selectMovie.director,
+        duration: selectMovie.duration,
+        year: selectMovie.year,
+        description: selectMovie.description,
+        image: `https://api.nomoreparties.co${selectMovie.image.url}`,
+        thumbnail: `https://api.nomoreparties.co${selectMovie.image.formats.thumbnail.url}`,
+        trailerLink: selectMovie.trailerLink,
+        movieId: selectMovie.id,
+        nameRU: selectMovie.nameRU,
+        nameEN: selectMovie.nameEN,
+      }),
       credentials: 'include'
     })
   }
 
   //Метод удаления сохраненного фильма
-  deleteCard(cardId) {
-    return this._request(`${this._baseUrl}/movies/${cardId}`, {
+  deleteCard(movieId) {
+    return this._request(`${this._myUrl}/movies/${movieId}`, {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include'
@@ -95,7 +109,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'https://movies.nb.nomoredomains.work',
+  myUrl: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json'
   }

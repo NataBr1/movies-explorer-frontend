@@ -3,16 +3,18 @@ import React from "react";
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({ movies, handleCardDelete, saveFavoriteMovie }) {
+
   return (
     <>
       <section className="moviesCardList">
         <ul className="moviesCardList__list">
           {movies.map((card) => (
             <MoviesCard
-              key={card.id}
+              key={card.id || card.movieId}
               card={card}
-
+              handleCardDelete={handleCardDelete}
+              saveFavoriteMovie={saveFavoriteMovie}
             />
           ))}
         </ul>

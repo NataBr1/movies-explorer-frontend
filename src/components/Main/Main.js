@@ -9,12 +9,14 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer';
 import Portfolio from '../Portfolio/Portfolio';
+import PopupMenu from '../PopupMenu/PopupMenu';
 
-function Main({ loggedIn }) {
+function Main({ loggedIn, isOpen, onClose }) {
   return (
     <div className="main">
       {loggedIn ? <Header classNameHeader={"header header_color"}/> : <NavTab classNameHeader={"header"}/> }
       <main>
+        <PopupMenu isOpen={isOpen} onClose={onClose} />
         <Promo />
         <AboutProject />
         <Techs />

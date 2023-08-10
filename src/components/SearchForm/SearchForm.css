@@ -31,6 +31,14 @@
   outline: 1px solid rgba(66,66,66,.9);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+  -webkit-text-fill-color: #FFFFFF;
+  -webkit-box-shadow: 0 0 0 17px #202020 inset;
+}
+
 .searchForm__button {
   background: url(../../images/find_searchform.svg) no-repeat #4285F4 center;
   color: #fff;
