@@ -6,7 +6,7 @@ import PopupMenu from "../PopupMenu/PopupMenu";
 import './Profile.css'
 import React from "react";
 
-function Profile ({ onClick, isOpen, onClose, onClickEditProfile, isOpenEditProfile, onCloseEditProfile, onUpdateUser, signOut }) {
+function Profile ({ onClick, isOpen, onClose, onClickEditProfile, isOpenEditProfile, onCloseEditProfile, onUpdateUser, errorMessage, signOut }) {
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
@@ -20,7 +20,11 @@ function Profile ({ onClick, isOpen, onClose, onClickEditProfile, isOpenEditProf
 
         <section className="profile__box">
 
-          <PopupEditProfile isOpen={isOpenEditProfile} onClose={onCloseEditProfile} onUpdateUser={onUpdateUser}/>
+          <PopupEditProfile
+            isOpen={isOpenEditProfile}
+            onClose={onCloseEditProfile}
+            onUpdateUser={onUpdateUser}
+            errorMessage={errorMessage}/>
 
           <div className={`profile__form ${isOpenEditProfile ? "profile__form_hidden": ""}`}>
             <div className="profile__field">

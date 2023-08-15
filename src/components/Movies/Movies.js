@@ -23,6 +23,7 @@ function Movies({
 })
 
 {
+
   return (
     <div className="movies">
 

@@ -3,24 +3,23 @@ import React from "react";
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 
-function MoviesCardList({ movies, handleCardDelete, saveFavoriteMovie }) {
+function MoviesCardList({ movies, handleCardDelete, saveFavoriteMovie, count }) {
 
   return (
-    <>
-      <section className="moviesCardList">
-        <ul className="moviesCardList__list">
-          {movies.map((card) => (
+    <section className="moviesCardList">
+      <ul className="moviesCardList__list">
+        {movies.map((card, index) =>
+          index + 1 <= count ? (
             <MoviesCard
-              key={card.id || card.movieId}
+              key={card._id || card.id}
               card={card}
               handleCardDelete={handleCardDelete}
               saveFavoriteMovie={saveFavoriteMovie}
             />
-          ))}
-        </ul>
+        ) : (""))}
+      </ul>
 
-      </section>
-    </>
+    </section>
   )
 }
 

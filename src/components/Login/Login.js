@@ -2,25 +2,21 @@ import './Login.css'
 import React from "react";
 import logo from '../../images/logo.svg';
 import { Link } from "react-router-dom";
+import useFormValidation from '../../utils/useFormValidation';
 
-function Login ({ handleLogin }) {
-  const [formValue, setFormValue] = React.useState({
+function Login ({ handleLogin, errorMessage }) {
+  const { values, isValid, handleChange, errors, resetForm } = useFormValidation({
     email: '',
     password: '',
   })
 
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value
-    });
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = formValue;
-    handleLogin({ email, password });
+    const { email, password } = values;
+    if (isValid) {
+      handleLogin({ email, password });
+      resetForm();
+    }
   }
 
   return (
@@ -31,14 +27,14 @@ function Login ({ handleLogin }) {
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
 
-          <form onSubmit={handleSubmit} noValidate >
+          <form className="form" onSubmit={handleSubmit} noValidate >
               <label className="login__field">
                   <span className="login__span">E-mail</span>
                   <input
-                    className="login__input"
+                    className={`login__input ${errors.email ? "login__input_error" : ""}`}
                     name="email"
                     type="email"
-                    value={formValue.email}
+                    value={values.email || ""}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
                     minLength={6}
@@ -46,26 +42,26 @@ function Login ({ handleLogin }) {
                     onChange={handleChange}
                     required
                   />
-                  <span className="login__input-error"></span>
+                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.email}</span>
               </label>
               <label className="login__field">
                   <span className="login__span">Пароль</span>
                   <input
-                    className="login__input"
+                    className={`login__input ${errors.password ? "login__input_error" : ""}`}
                     name="password"
                     type="password"
-                    value={formValue.password}
+                    value={values.password || ""}
                     placeholder="Введите пароль"
                     autoComplete="off"
-                    minLength={6}
+                    minLength={2}
                     maxLength={30}
                     onChange={handleChange}
                     required
                   />
-                  <span className="login__input-error"></span>
+                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.password}</span>
               </label>
-              <div className="login__box-error"><span className="login__text-error">{}</span></div>
-              <button className="login__button">Войти</button>
+              <div className="login__box-error"><span className="login__text-error">{errorMessage}</span></div>
+              <button className={`login__button ${!isValid ? "login__button_inactive" : ""}`} type="submit" disabled={!isValid}>Войти</button>
               <p className="login__text">Ещё не зарегистрированы? <Link to="/signup" className="login__link">Регистрация</Link></p>
           </form>
 

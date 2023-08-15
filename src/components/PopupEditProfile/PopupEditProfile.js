@@ -1,17 +1,22 @@
 import './PopupEditProfile.css'
 import React from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { useForm } from "../../hooks/useForm"
+//import { useForm } from "../../hooks/useForm"
+import useFormValidation from '../../utils/useFormValidation';
 
-function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
+function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const {values, handleChange, setValues} = useForm({});
-  
+
+  const { values, setValues, handleChange, errors } = useFormValidation({
+    name: '',
+    email: '',
+  })
+
   function handleSubmit(e) {
     e.preventDefault();
       onUpdateUser({
-      name: values.name,
-      email: values.email,
+        name: values.name,
+        email: values.email,
     });
   }
 
@@ -28,7 +33,7 @@ function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
         <label className="popupEditProfile__field">
           <span className="popupEditProfile__span">Имя</span>
           <input
-            className="popupEditProfile__input"
+            className={`popupEditProfile__input ${errors.name ? "popupEditProfile__input_error" : ""}`}
             name="name"
             type="text"
             defaultValue={currentUser.name}
@@ -37,8 +42,8 @@ function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
             minLength={2}
             maxLength={30}
             onChange={handleChange}
-            required="">
-          </input>
+            required
+          />
         </label>
         <label className="popupEditProfile__field">
           <span className="popupEditProfile__span">E&#8209;mail</span>
@@ -52,11 +57,11 @@ function PopupEditProfile({ isOpen, onClick, onUpdateUser }) {
             minLength={6}
             maxLength={30}
             onChange={handleChange}
-            required="">
-          </input>
+            require
+          />
         </label>
-        <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{}</span></div>
-        <button className="popupEditProfile__save"type="submit" onClick={onClick}>Сохранить</button>
+        <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{errorMessage}</span></div>
+        <button className="popupEditProfile__save" type="submit">Сохранить</button>
       </form>
    </section>
   )

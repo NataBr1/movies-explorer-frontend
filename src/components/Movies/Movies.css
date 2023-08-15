@@ -9,7 +9,14 @@
 }
 
 .movies__button-box {
+  visibility: visible;
+  opacity: 1;
   padding: 50px 0 80px;
+}
+
+.movies__button-box_disactive {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .movies__more {

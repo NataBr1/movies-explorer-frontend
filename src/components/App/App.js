@@ -16,6 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 // import Preloader from '../Preloader/Preloader';
 
 function App() {
+  const [errorMessage, setErrorMessage] = React.useState('')
   const [isPopupMenu, setIsPopupMenu] = React.useState(false);
   const [isPopupEditProfile, setIsPopupEditProfile] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
@@ -49,19 +50,21 @@ function App() {
   }, [loggedIn]);
 
   // Регистрация пользователя
-  function handleRegister (name, email, password) {
-    mainApi.register(name, email, password)
+  function handleRegister ({ name, email, password }) {
+    setErrorMessage('')
+    mainApi.register({ name, email, password })
       .then(() => {
         navigate("/signin", { replace: true });
       })
       .catch((err) => {
         console.log(`${err}`);
+        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
       })
   }
-
   // Авторизация пользователя
   function handleLogin ({ email, password }) {
-    mainApi.authorize(email, password)
+    setErrorMessage('')
+    mainApi.authorize({ email, password })
       .then((user) => {
           localStorage.setItem('loggedIn', true);
           setLoggedIn(true);
@@ -70,17 +73,23 @@ function App() {
       })
       .catch((err) => {
         console.log(`${err}`);
+        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
       })
   }
 
   // Изменение данных о пользователе
   function handleUpdateUser(data) {
+    setErrorMessage('')
     mainApi.setUserInfo(data)
       .then((user) => {
         setCurrentUser(user);
         closePopup();
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(`${err}`);
+        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+      })
+
   }
 
   // Проверка токена
@@ -102,6 +111,7 @@ function App() {
   function signOut() {
     localStorage.clear();
     setLoggedIn(false);
+    setCurrentUser({})
     navigate('/');
   }
 
@@ -201,8 +211,6 @@ function App() {
     return searchMovies;
   }
 
-  // В сохраненных фильмах сделаны 2 отдельных вида фильтра - либо по ключевому слову, либо по чекбоксу.
-  //Искать по двум фильтрам сразу в избранном мне показалось лишним
   React.useEffect(() => {
     if (checkBox) {
       setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
@@ -294,15 +302,19 @@ function App() {
               onUpdateUser={handleUpdateUser}
               isOpen={isPopupMenu}
               onClick={handlePopupMenuClick}
+              errorMessage={errorMessage}
               signOut={signOut} />
             }/>
 
           <Route path="/signin" element={
-            <Login handleLogin={handleLogin} />
+            <Login handleLogin={handleLogin}
+            errorMessage={errorMessage} />
           } />
 
           <Route path="/signup" element={
-            <Register handleRegister={handleRegister} />
+            <Register
+              handleRegister={handleRegister}
+              errorMessage={errorMessage} />
           } />
 
           <Route path="*" element={

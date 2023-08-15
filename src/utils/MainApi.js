@@ -18,22 +18,22 @@ class MainApi {
   }
 
   // Метод регистрации
-  register = ( name, email, password ) => {
+  register = (name, email, password) => {
     return this._request(`${this._myUrl}/signup`, {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
-      body: JSON.stringify({name, email, password})
+      body: JSON.stringify({ name, email, password })
     })
   };
 
   //Метод авторизации
-  authorize  = ( email, password ) => {
+  authorize  = ({ email, password }) => {
     return this._request(`${this._myUrl}/signin`, {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
-      body: JSON.stringify({email, password})
+      body: JSON.stringify({ email, password })
     })
   };
 

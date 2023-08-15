@@ -49,6 +49,10 @@
   padding: 0;
 }
 
+.popupEditProfile__input_error {
+  color: #EE3465;
+}
+
 .popupEditProfile__input:focus {
   outline: 0;
   opacity: .8;
