@@ -7,7 +7,9 @@ import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css';
 import React from "react";
 
+
 function Movies({
+  favoriteMovie,
   isLoading,
   onClick,
   isOpen,
@@ -21,10 +23,13 @@ function Movies({
   searchMovies,
   saveFavoriteMovie,
   deleteFavoriteMovie,
-  errorMessage
+  errorMessage,
+  isSaveMovie,
+  setIsSaveMovie
 })
 
 {
+
 
 
   return (
@@ -48,11 +53,12 @@ function Movies({
         {errorMessage ? (<p className="search__error">{errorMessage}</p>) : ""}
 
         <MoviesCardList
+          favoriteMovie={favoriteMovie}
           movies={searchMovies}
           saveFavoriteMovie={saveFavoriteMovie}
-          deleteFavoriteMovie={deleteFavoriteMovie} />
-
-
+          deleteFavoriteMovie={deleteFavoriteMovie}
+          isSaveMovie={isSaveMovie}
+          setIsSaveMovie={setIsSaveMovie} />
 
       </main>
 

@@ -3,18 +3,20 @@ import React from "react";
 import { useLocation } from 'react-router-dom';
 
 
-function MoviesCard({ card, saveFavoriteMovie, deleteFavoriteMovie }) {
+
+function MoviesCard({ card, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie }) {
   const location = useLocation();
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
 
+
   function saveMovie() {
-    saveFavoriteMovie(card)
     setIsSaveMovie(true)
+    saveFavoriteMovie(card)
   }
 
   function deleteMovie() {
-    deleteFavoriteMovie(card)
     setIsSaveMovie(false)
+    deleteFavoriteMovie(card)
   }
 
   function showDurationHour(hour) {
@@ -40,7 +42,16 @@ function MoviesCard({ card, saveFavoriteMovie, deleteFavoriteMovie }) {
       <a className="moviesCard__image-link" href={card.trailerLink} target="_blank" rel="noreferrer">
         <img className="moviesCard__image" src={location.pathname === '/saved-movies' ? card.image : `https://api.nomoreparties.co${card.image.url}`} alt={card.description} />
       </a>
-      {location.pathname === "/movies" && !isSaveMovie && (
+
+      {
+        location.pathname === "/saved-movies"
+          ? <button className="moviesCard__button-delete" type="button" onClick={deleteMovie}></button>
+          : isSaveMovie
+            ? <button className="moviesCard__button_active" type="button" onClick={deleteMovie}></button>
+            : <button className="moviesCard__button" type="button" onClick={saveMovie}>Сохранить</button>
+      }
+
+      {/* {location.pathname === "/movies" && !isSaveMovie && (
         <button className="moviesCard__button" type="button" onClick={saveMovie}>Сохранить</button>
       )}
       {location.pathname === "/movies" && isSaveMovie && (
@@ -48,7 +59,7 @@ function MoviesCard({ card, saveFavoriteMovie, deleteFavoriteMovie }) {
       )}
       {location.pathname === "/saved-movies" && (
         <button className="moviesCard__button-delete" type="button" onClick={deleteMovie}></button>
-      )}
+      )} */}
     </li>
   )
 }

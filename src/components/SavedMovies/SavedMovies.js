@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 import './SavedMovies.css';
 import React from "react";
 
+
 function SavedMovies ({
   onClick,
   isOpen,
@@ -13,11 +14,13 @@ function SavedMovies ({
   value,
   setValue,
   onSubmitSearch,
+  onFilterMovies,
   checkBox,
   setCheckBox,
   movies,
   deleteFavoriteMovie
 }) {
+
 
   return (
     <div className="savedMovies">
@@ -32,6 +35,7 @@ function SavedMovies ({
           value={value}
           setValue={setValue}
           onSubmitSearch={onSubmitSearch}
+          onFilterMovies={onFilterMovies}
           checkBox={checkBox}
           setCheckBox={setCheckBox} />
 

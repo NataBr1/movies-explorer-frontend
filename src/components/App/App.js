@@ -14,8 +14,6 @@ import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
-// import Preloader from '../Preloader/Preloader';
-
 function App() {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [isPopupMenu, setIsPopupMenu] = React.useState(false);
@@ -23,11 +21,14 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [favoriteMovie, setFavoriteMovie] = React.useState([]);
   const [searchMovies, setSearchMovies] = React.useState([]);
+  //const [searchFavMovies, setSearchFavMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [value, setValue] = React.useState(''); //значение поля поиска фильма
+  const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
+  const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
 
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function App() {
       mainApi.getUserInfo()
       .then((user) => {
         setCurrentUser(user);
-        console.log(user)
+        //console.log(user)
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -122,9 +123,9 @@ function App() {
   function signOut() {
     localStorage.clear();
     localStorage.removeItem('loggedIn');
-    localStorage.removeItem('searchMovies');
-    localStorage.removeItem('shortMovies');
-    localStorage.removeItem('movies');
+    localStorage.removeItem('request');
+    localStorage.removeItem('switchStatus');
+    localStorage.removeItem('foundMovies');
     localStorage.removeItem('allMovies');
     setLoggedIn(false);
     setCurrentUser({});
@@ -150,14 +151,14 @@ function App() {
     return movies.filter((movie) => movie.duration <= 40);
   }
 
-  function handleFilteredMovies(movies, value, checkBox) {
-    const moviesList = filteredMoviesVal(movies, value, checkBox);
+  function handleFilteredMovies(allMovies, value, checkBox) {
+    const moviesList = filteredMoviesVal(allMovies, value, checkBox);
     setMovies(moviesList);
     setSearchMovies(checkBox ? filteredMoviesDur(moviesList) : moviesList);
-    localStorage.setItem("movies", JSON.stringify(moviesList));
-    localStorage.setItem("allMovies", JSON.stringify(movies));
+    localStorage.setItem("foundMovies", JSON.stringify(moviesList));
   }
 
+  // Функция отображения фильмов при переключении чекбокса
   function handleCheckBox() {
     setCheckBox(!checkBox);
     if (!checkBox) {
@@ -169,22 +170,25 @@ function App() {
     } else {
       setSearchMovies(movies);
     }
-    localStorage.setItem("shortMovies", !checkBox);
+    localStorage.setItem("switchStatus", !checkBox);
   }
 
   // Обработчик сабмита поиска фильмов
   function submitSearch(value) {
-    localStorage.setItem("searchMovies", value);
-    localStorage.setItem("shortMovies", checkBox);
-    if (localStorage.getItem("allMovies")) {
-      const movies = JSON.parse(localStorage.getItem("allMovies"));
-      handleFilteredMovies(movies, value, checkBox);
-    } else {
+    localStorage.setItem("request", value); //сохраняем текст запроса
+    localStorage.setItem("switchStatus", checkBox); // сохраняем статус чекбокса
+    if (localStorage.getItem("allMovies")) { // если уже есть список всех фильмов, возьмем оттуда
+      const allMovies = JSON.parse(localStorage.getItem("allMovies"));
+      handleFilteredMovies(allMovies, value, checkBox);
+      console.log("В localStorage есть фильмы")
+    } else { // или включаем прелоадер и тянем все фильмы с апи и сохраняем в localStorage
       setIsLoading(true);
       moviesApi.getMoviesList()
-        .then((movies)=> {
-          handleFilteredMovies(movies, value, checkBox);
-          console.log(movies)
+        .then((allMovies)=> {
+          handleFilteredMovies(allMovies, value, checkBox);
+          localStorage.setItem("allMovies", JSON.stringify(allMovies));
+          console.log(allMovies);
+          console.log(searchMovies);
         })
         .catch((err) => {
           console.log(`${err}`);
@@ -197,10 +201,10 @@ function App() {
 
   // Получение фильмов из localStorage
   React.useEffect(() => {
-    if (localStorage.getItem("movies")) {
-      const movies = JSON.parse(localStorage.getItem("movies"));
+    if (localStorage.getItem("foundMovies")) {
+      const movies = JSON.parse(localStorage.getItem("foundMovies"));
       setMovies(movies);
-      if (localStorage.getItem("shortMovies") === "true") {
+      if (localStorage.getItem("switchStatus") === "true") {
         setSearchMovies(filteredMoviesDur(movies));
       } else {
         setSearchMovies(movies);
@@ -210,7 +214,7 @@ function App() {
 
   // Получение короткомеражек из localStorage
   React.useEffect(() => {
-    if (localStorage.getItem("shortMovies") === "true") {
+    if (localStorage.getItem("switchStatus") === "true") {
       setCheckBox(true);
     } else {
       setCheckBox(false);
@@ -219,7 +223,7 @@ function App() {
 
   // Вывод сообщения об ошибке поиска фильма
   React.useEffect(() => {
-    if (localStorage.getItem("searchMovies" && location.pathname === "/movies")) {
+    if (localStorage.getItem("request" && location.pathname === "/movies")) {
       if (searchMovies.length === 0) {
         setErrorMessage("Ничего не найдено");
       } else {
@@ -245,12 +249,51 @@ function App() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
         setFavoriteMovie(data)
-        console.log(data)
+        //console.log(data)
       })
       .catch((err) => {
         console.log(`${err}`);
       })
   }
+
+  // Выборка фильмов по чекбоксу в сохраненных фильмах
+  function filteredMyMoviesDur(searchMovies) {
+    if (checkBoxInSave) {
+      return searchMovies.filter((searchMovies) => searchMovies.duration <= 40);
+    }
+    return searchMovies;
+  }
+
+  React.useEffect(() => {
+    if (checkBoxInSave) {
+      setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
+    } else {
+      getFavoriteMovies()
+    }
+  }, [checkBoxInSave]);
+
+
+  // // Выборка фильмов по ключевому слову в сохраненных фильмах
+  // function filteredMyMoviesVal(favoriteMovie, valueInSave) {
+  //   const filteredSavedMovie = favoriteMovie.filter((favoriteMovie) => {
+  //     return (
+  //       favoriteMovie.nameRU.toLowerCase().includes(valueInSave.toLowerCase()) ||
+  //       favoriteMovie.nameEN.toLowerCase().includes(valueInSave.toLowerCase())
+  //     )
+  //   })
+  //   return filteredSavedMovie;
+  // }
+
+  // function handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave) {
+  //   const moviesListInSaved = filteredMyMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
+  //   setFavoriteMovie(checkBoxInSave ? filteredMyMoviesDur(moviesListInSaved) : moviesListInSaved);
+  //   return moviesListInSaved()
+  // }
+
+  // function submitSearchMyFilm() {
+  //   getFavoriteMovies();
+  //   setFavoriteMovie(handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave))
+  // }
 
   React.useEffect(() => {
     getFavoriteMovies()
@@ -293,6 +336,7 @@ function App() {
 
           <Route path="/movies" element={
             <ProtectedRoute element={Movies}
+              favoriteMovie={favoriteMovie}
               loggedIn={loggedIn}
               isLoading={isLoading}
               onClick={handlePopupMenuClick}
@@ -316,11 +360,11 @@ function App() {
               onClick={handlePopupMenuClick}
               isOpen={isPopupMenu}
               onClose={closePopup}
-              value={value}
-              setValue={setValue}
+              value={valueInSave}
+              setValue={setValueInSave}
               //onSubmitSearch={submitSearchMyFilm}
-              checkBox={checkBox}
-              setCheckBox={setCheckBox}
+              checkBox={checkBoxInSave}
+              setCheckBox={setCheckBoxInSave}
               movies={favoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
               />
