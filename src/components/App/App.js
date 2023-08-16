@@ -9,10 +9,11 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Error from '../Error/Error';
-// import { func } from 'prop-types';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
+
 // import Preloader from '../Preloader/Preloader';
 
 function App() {
@@ -22,18 +23,16 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [favoriteMovie, setFavoriteMovie] = React.useState([]);
   const [searchMovies, setSearchMovies] = React.useState([]);
-  const [shortMovies, setShortMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [value, setValue] = React.useState(''); //значение поля поиска фильма
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
-
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
-
 
   // Получение информации по пользователе
   React.useEffect(() => {
@@ -55,10 +54,15 @@ function App() {
     mainApi.register({ name, email, password })
       .then(() => {
         navigate("/signin", { replace: true });
+        setIsInfoTooltipOpen(true);
       })
       .catch((err) => {
         console.log(`${err}`);
-        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+        if (err.includes(409)) {
+          setErrorMessage("Пользователь с таким email уже зарегистрирован.")
+        } else {
+          setErrorMessage("Что-то пошло не так! Попробуйте еще раз.");
+        }
       })
   }
   // Авторизация пользователя
@@ -73,7 +77,11 @@ function App() {
       })
       .catch((err) => {
         console.log(`${err}`);
-        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+        if (err.includes(401)) {
+          setErrorMessage("Неверный email или пароль! Попробуйте еще раз.")
+        } else {
+          setErrorMessage("Что-то пошло не так! Попробуйте еще раз.");
+        }
       })
   }
 
@@ -87,9 +95,12 @@ function App() {
       })
       .catch((err) => {
         console.log(`${err}`);
-        setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+        if (err.includes(409)) {
+          setErrorMessage("Пользователь с таким email уже зарегистрирован.")
+        } else {
+          setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+        }
       })
-
   }
 
   // Проверка токена
@@ -110,26 +121,17 @@ function App() {
   // Выход из аккаунта
   function signOut() {
     localStorage.clear();
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('searchMovies');
+    localStorage.removeItem('shortMovies');
+    localStorage.removeItem('movies');
+    localStorage.removeItem('allMovies');
     setLoggedIn(false);
-    setCurrentUser({})
+    setCurrentUser({});
+    setMovies([]);
+    setFavoriteMovie([]);
+    setSearchMovies([]);
     navigate('/');
-  }
-
-  // Получение списка фильмов со стороннего апи
-  function getMoviesList() {
-    setIsLoading(true)
-    moviesApi.getMoviesList()
-      .then((allData)=> {
-        setMovies(allData)
-        localStorage.setItem('allData', JSON.stringify(allData));
-        console.log(allData)
-      })
-      .catch((err) => {
-        console.log(`${err}`);
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
   }
 
   // Выборка фильмов по ключевому слову
@@ -144,31 +146,93 @@ function App() {
   }
 
   // Выборка фильмов по чекбоксу
-  function filteredMoviesDur(searchMovies) {
-    if (checkBox) {
-      return searchMovies.filter((searchMovies) => searchMovies.duration <= 40);
+  function filteredMoviesDur(movies) {
+    return movies.filter((movie) => movie.duration <= 40);
+  }
+
+  function handleFilteredMovies(movies, value, checkBox) {
+    const moviesList = filteredMoviesVal(movies, value, checkBox);
+    setMovies(moviesList);
+    setSearchMovies(checkBox ? filteredMoviesDur(moviesList) : moviesList);
+    localStorage.setItem("movies", JSON.stringify(moviesList));
+    localStorage.setItem("allMovies", JSON.stringify(movies));
+  }
+
+  function handleCheckBox() {
+    setCheckBox(!checkBox);
+    if (!checkBox) {
+      if (filteredMoviesDur(movies).length === 0) {
+        setSearchMovies(filteredMoviesDur(movies));
+      } else {
+        setSearchMovies(filteredMoviesDur(movies));
+      }
+    } else {
+      setSearchMovies(movies);
     }
-    return searchMovies;
+    localStorage.setItem("shortMovies", !checkBox);
   }
 
   // Обработчик сабмита поиска фильмов
   function submitSearch(value) {
-    getMoviesList();
-    setSearchMovies(filteredMoviesVal(movies, value));
-    localStorage.setItem("searchRes", JSON.stringify(filteredMoviesVal(movies, value)));
+    localStorage.setItem("searchMovies", value);
+    localStorage.setItem("shortMovies", checkBox);
+    if (localStorage.getItem("allMovies")) {
+      const movies = JSON.parse(localStorage.getItem("allMovies"));
+      handleFilteredMovies(movies, value, checkBox);
+    } else {
+      setIsLoading(true);
+      moviesApi.getMoviesList()
+        .then((movies)=> {
+          handleFilteredMovies(movies, value, checkBox);
+          console.log(movies)
+        })
+        .catch((err) => {
+          console.log(`${err}`);
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
   }
 
+  // Получение фильмов из localStorage
   React.useEffect(() => {
-    if (checkBox) {
-      setShortMovies(filteredMoviesDur(searchMovies));
+    if (localStorage.getItem("movies")) {
+      const movies = JSON.parse(localStorage.getItem("movies"));
+      setMovies(movies);
+      if (localStorage.getItem("shortMovies") === "true") {
+        setSearchMovies(filteredMoviesDur(movies));
+      } else {
+        setSearchMovies(movies);
+      }
     }
-}, [checkBox]);
+  }, []);
+
+  // Получение короткомеражек из localStorage
+  React.useEffect(() => {
+    if (localStorage.getItem("shortMovies") === "true") {
+      setCheckBox(true);
+    } else {
+      setCheckBox(false);
+    }
+  }, []);
+
+  // Вывод сообщения об ошибке поиска фильма
+  React.useEffect(() => {
+    if (localStorage.getItem("searchMovies" && location.pathname === "/movies")) {
+      if (searchMovies.length === 0) {
+        setErrorMessage("Ничего не найдено");
+      } else {
+        setErrorMessage("");
+      }
+    }
+  }, []);
 
   // Сохранение фильма в избранные
   function saveFavoriteMovie(movie) {
     mainApi.addCard(movie)
       .then((data) => {
-        setFavoriteMovie([...favoriteMovie, data])
+        setFavoriteMovie([data, ...favoriteMovie])
         console.log(data)
       })
       .catch((err) => {
@@ -192,43 +256,10 @@ function App() {
     getFavoriteMovies()
   }, [])
 
-  // Выборка фильмов по ключевому слову в сохраненных фильмах
-  function filteredMyMoviesVal(favoriteMovie, value) {
-    const filtered = favoriteMovie.filter((favoriteMovie) => {
-      return (
-        favoriteMovie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-        favoriteMovie.nameEN.toLowerCase().includes(value.toLowerCase())
-      )
-    })
-    return filtered;
-  }
-
-  // Выборка фильмов по чекбоксу в сохраненных фильмах
-  function filteredMyMoviesDur(searchMovies) {
-    if (checkBox) {
-      return searchMovies.filter((searchMovies) => searchMovies.duration <= 40);
-    }
-    return searchMovies;
-  }
-
-  React.useEffect(() => {
-    if (checkBox) {
-      setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
-    } else {
-      getFavoriteMovies()
-    }
-}, [checkBox]);
-
-  // Обработчик сабмита поиска фильмов в сохраненных фильмах
-  function submitSearchMyFilm(value) {
-    getFavoriteMovies();
-    setSearchMovies(filteredMyMoviesVal(favoriteMovie, value));
-    localStorage.setItem("searchResMyFilm", JSON.stringify(filteredMyMoviesVal(favoriteMovie, value)));
-  }
-
   // Удаление фильма из избранных
   function handleCardDelete(card) {
-    mainApi.deleteCard(card._id)
+    const savedCard = favoriteMovie.find((item) => item.movieId === card.id || item.movieId === card.movieId);
+    mainApi.deleteCard(savedCard._id)
       .then(() => {
         setFavoriteMovie((state) => state.filter((item) => item._id !== card._id));
       })
@@ -247,6 +278,7 @@ function App() {
   function closePopup() {
     setIsPopupMenu(false)
     setIsPopupEditProfile(false)
+    setIsInfoTooltipOpen(false)
   }
 
   return (
@@ -269,12 +301,13 @@ function App() {
               value={value}
               setValue={setValue}
               onSubmitSearch={submitSearch}
+              onFilterMovies={handleCheckBox}
               checkBox={checkBox}
               setCheckBox={setCheckBox}
-              movies={checkBox ? shortMovies : searchMovies}
+              searchMovies={searchMovies}
               saveFavoriteMovie={saveFavoriteMovie}
-              filteredMovies={filteredMoviesVal}
-              />
+              deleteFavoriteMovie={handleCardDelete}
+              errorMessage={errorMessage} />
           } />
 
           <Route path="/saved-movies" element={
@@ -285,11 +318,11 @@ function App() {
               onClose={closePopup}
               value={value}
               setValue={setValue}
-              onSubmitSearch={submitSearchMyFilm}
+              //onSubmitSearch={submitSearchMyFilm}
               checkBox={checkBox}
               setCheckBox={setCheckBox}
-              movies={!value ? favoriteMovie : searchMovies}
-              handleCardDelete={handleCardDelete}
+              movies={favoriteMovie}
+              deleteFavoriteMovie={handleCardDelete}
               />
           } />
 
@@ -307,8 +340,9 @@ function App() {
             }/>
 
           <Route path="/signin" element={
-            <Login handleLogin={handleLogin}
-            errorMessage={errorMessage} />
+            <Login
+              handleLogin={handleLogin}
+              errorMessage={errorMessage} />
           } />
 
           <Route path="/signup" element={
@@ -322,6 +356,11 @@ function App() {
           } />
 
         </Routes>
+
+        <InfoTooltip
+            isOpen={isInfoTooltipOpen}
+            onClose={closePopup}
+        />
 
       </div>
     </CurrentUserContext.Provider>

@@ -40,10 +40,22 @@
   transition: .2s ease-in;
 }
 
+.search__error {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #8b8b8b;
+  text-align: center;
+}
+
 @media (max-width: 425px) {
   .movies__more {
     width: 240px;
     font-size: 12px;
+  }
+
+  .search__error {
+    font-size: 18px;
   }
 }
 

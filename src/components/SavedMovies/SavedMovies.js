@@ -16,7 +16,7 @@ function SavedMovies ({
   checkBox,
   setCheckBox,
   movies,
-  handleCardDelete
+  deleteFavoriteMovie
 }) {
 
   return (
@@ -37,7 +37,7 @@ function SavedMovies ({
 
         <MoviesCardList
           movies={movies}
-          handleCardDelete={handleCardDelete} />
+          deleteFavoriteMovie={deleteFavoriteMovie} />
 
         <div className="savedMovies__box" />
 

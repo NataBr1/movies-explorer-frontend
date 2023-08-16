@@ -174,7 +174,7 @@ input:-webkit-autofill:active  {
   }
 
   .searchForm__field {
-    margin-bottom: 40px;
+    margin-bottom: 9px;
     padding-bottom: 9px;
   }
 }

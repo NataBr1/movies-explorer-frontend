@@ -15,14 +15,17 @@ function Movies({
   value,
   setValue,
   onSubmitSearch,
+  onFilterMovies,
   checkBox,
   setCheckBox,
-  movies,
+  searchMovies,
   saveFavoriteMovie,
-  filteredMovies
+  deleteFavoriteMovie,
+  errorMessage
 })
 
 {
+
 
   return (
     <div className="movies">
@@ -37,19 +40,19 @@ function Movies({
           value={value}
           setValue={setValue}
           onSubmitSearch={onSubmitSearch}
+          onFilterMovies={onFilterMovies}
           checkBox={checkBox}
           setCheckBox={setCheckBox} />
 
-        <MoviesCardList
-          movies={movies}
-          saveFavoriteMovie={saveFavoriteMovie}
-          filteredMovies={filteredMovies} />
-
         {isLoading ? <Preloader /> : ""}
+        {errorMessage ? (<p className="search__error">{errorMessage}</p>) : ""}
 
-        <div className="movies__button-box">
-          <button className="movies__more" type="button">Ещё</button>
-        </div>
+        <MoviesCardList
+          movies={searchMovies}
+          saveFavoriteMovie={saveFavoriteMovie}
+          deleteFavoriteMovie={deleteFavoriteMovie} />
+
+
 
       </main>
 

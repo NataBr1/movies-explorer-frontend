@@ -15,8 +15,8 @@ function Register ({ handleRegister, errorMessage }) {
     evt.preventDefault();
     const { name, email, password } = values;
     if (isValid) {
-      handleRegister(name, email, password);
-      //resetForm();
+      handleRegister({ name, email, password });
+      resetForm();
     }
 
   };

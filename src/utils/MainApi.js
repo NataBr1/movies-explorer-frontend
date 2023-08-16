@@ -18,7 +18,7 @@ class MainApi {
   }
 
   // Метод регистрации
-  register = (name, email, password) => {
+  register = ({ name, email, password }) => {
     return this._request(`${this._myUrl}/signup`, {
       method: 'POST',
       headers: this._headers,

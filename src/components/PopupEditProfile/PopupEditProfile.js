@@ -28,7 +28,7 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
   }, [isOpen, currentUser, setValues]);
 
   return (
-   <section className={`popupEditProfile ${isOpen ? "popupEditProfile_opened": ""}`} >
+    <section className={`popupEditProfile ${isOpen ? "popupEditProfile_opened": ""}`} >
       <form className="popupEditProfile__form" onSubmit={handleSubmit} noValidate >
         <label className="popupEditProfile__field">
           <span className="popupEditProfile__span">Имя</span>
@@ -63,7 +63,7 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
         <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{errorMessage}</span></div>
         <button className="popupEditProfile__save" type="submit">Сохранить</button>
       </form>
-   </section>
+    </section>
   )
 }
 

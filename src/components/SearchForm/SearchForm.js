@@ -1,7 +1,7 @@
 import './SearchForm.css'
 import React from "react";
 
-function SearchForm({ value, setValue, onSubmitSearch, checkBox, setCheckBox }) {
+function SearchForm({ value, setValue, onSubmitSearch, onFilterMovies, checkBox, setCheckBox }) {
 
   const [error, setError] = React.useState('');
 
@@ -9,7 +9,6 @@ function SearchForm({ value, setValue, onSubmitSearch, checkBox, setCheckBox }) 
     evt.preventDefault();
     if (!value) {
       setError('Нужно ввести ключевое слово');
-      return;
     } else {
       setError('');
       onSubmitSearch(value);
@@ -41,7 +40,9 @@ function SearchForm({ value, setValue, onSubmitSearch, checkBox, setCheckBox }) 
           <input
               className="checkbox"
               type="checkbox"
-              onClick={() => setCheckBox(!checkBox)} />
+              onClick={() => setCheckBox(!checkBox)}
+              onChange={onFilterMovies}
+              defaultChecked={checkBox} />
           <span className="slider" />
         </label>
         <h2 className="switch-name">Короткометражки</h2>
