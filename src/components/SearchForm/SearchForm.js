@@ -2,7 +2,17 @@ import './SearchForm.css'
 import React from "react";
 import { useLocation } from 'react-router-dom';
 
-function SearchForm({ value, setValue, onSubmitSearch, onFilterMovies, checkBox, setCheckBox, getFavoriteMovies }) {
+function SearchForm({
+  value,
+  setValue,
+  onSubmitSearch,
+  onFilterMovies,
+  checkBox,
+  setCheckBox,
+  getFavoriteMovies
+})
+
+{
   const location = useLocation();
   const [error, setError] = React.useState('');
 

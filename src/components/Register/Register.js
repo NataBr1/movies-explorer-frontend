@@ -42,7 +42,7 @@ function Register ({ handleRegister, errorMessage }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required
+                    required=""
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.name}</span>
               </label>
@@ -58,7 +58,7 @@ function Register ({ handleRegister, errorMessage }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required
+                    required=""
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.email}</span>
               </label>

@@ -22,14 +22,10 @@ function Movies({
   searchMovies,
   saveFavoriteMovie,
   deleteFavoriteMovie,
-  errorMessage,
-  isSaveMovie,
-  setIsSaveMovie,
-  savedMovies
+  errorMessage
 })
 
 {
-
   return (
     <div className="movies">
 
@@ -48,16 +44,19 @@ function Movies({
           setCheckBox={setCheckBox} />
 
         {isLoading ? <Preloader /> : ""}
-        {errorMessage ? (<p className="search__error">{errorMessage}</p>) : ""}
+        {isLoading ? "" :
+          (errorMessage ? (<p className="search__error">{errorMessage}</p>) : "")
+        }
 
-        <MoviesCardList
-          favoriteMovie={favoriteMovie}
-          movies={searchMovies}
-          saveFavoriteMovie={saveFavoriteMovie}
-          deleteFavoriteMovie={deleteFavoriteMovie}
-          isSaveMovie={isSaveMovie}
-          setIsSaveMovie={setIsSaveMovie}
-          savedMovies={savedMovies} />
+
+        {isLoading ? "" :
+          <MoviesCardList
+            movies={searchMovies}
+            saveFavoriteMovie={saveFavoriteMovie}
+            deleteFavoriteMovie={deleteFavoriteMovie}
+            favoriteMovie={favoriteMovie} />
+        }
+
 
       </main>
 

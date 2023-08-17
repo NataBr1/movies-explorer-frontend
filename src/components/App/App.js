@@ -21,7 +21,6 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [favoriteMovie, setFavoriteMovie] = React.useState([]);
   const [searchMovies, setSearchMovies] = React.useState([]);
-  const [searchFavMovies, setSearchFavMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -30,7 +29,6 @@ function App() {
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-  //const [isSaveMovie, setIsSaveMovie] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -137,6 +135,11 @@ function App() {
     navigate('/');
   }
 
+  function startLoading() {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 1500);
+  }
+
   // Выборка фильмов по ключевому слову
   function filteredMoviesVal(movies, value) {
     const filtered = movies.filter((movie) => {
@@ -158,6 +161,11 @@ function App() {
     setMovies(moviesList);
     setSearchMovies(checkBox ? filteredMoviesDur(moviesList) : moviesList);
     localStorage.setItem("foundMovies", JSON.stringify(moviesList));
+    if (moviesList.length === 0) {
+      setErrorMessage("Ничего не найдено");
+    } else {
+      setErrorMessage("");
+    }
   }
 
   // Функция отображения фильмов при переключении чекбокса
@@ -166,17 +174,21 @@ function App() {
     if (!checkBox) {
       if (filteredMoviesDur(movies).length === 0) {
         setSearchMovies(filteredMoviesDur(movies));
+        setErrorMessage("Ничего не найдено")
       } else {
         setSearchMovies(filteredMoviesDur(movies));
       }
     } else {
       setSearchMovies(movies);
+      setErrorMessage("")
     }
     localStorage.setItem("switchStatus", !checkBox);
   }
 
   // Обработчик сабмита поиска фильмов
   function submitSearch(value) {
+    setErrorMessage("");
+    startLoading();
     localStorage.setItem("request", value); //сохраняем текст запроса
     localStorage.setItem("switchStatus", checkBox); // сохраняем статус чекбокса
     if (localStorage.getItem("allMovies")) { // если уже есть список всех фильмов, возьмем оттуда
@@ -184,7 +196,6 @@ function App() {
       handleFilteredMovies(allMovies, value, checkBox);
       console.log("В localStorage есть фильмы")
     } else { // или включаем прелоадер и тянем все фильмы с апи и сохраняем в localStorage
-      setIsLoading(true);
       moviesApi.getMoviesList()
         .then((allMovies)=> {
           handleFilteredMovies(allMovies, value, checkBox);
@@ -193,6 +204,7 @@ function App() {
           console.log(searchMovies);
         })
         .catch((err) => {
+          setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
           console.log(`${err}`);
         })
         .finally(() => {
@@ -223,14 +235,10 @@ function App() {
     }
   }, []);
 
-  // Вывод сообщения об ошибке поиска фильма
   React.useEffect(() => {
-    if (localStorage.getItem("request" && location.pathname === "/movies")) {
-      if (searchMovies.length === 0) {
-        setErrorMessage("Ничего не найдено");
-      } else {
-        setErrorMessage("");
-      }
+    if (localStorage.getItem("request")) {
+      const dataValue = JSON.stringify(localStorage.getItem("request"));
+      setValue(dataValue.replace(/\"/g, ""));
     }
   }, []);
 
@@ -259,7 +267,7 @@ function App() {
   }
 
   React.useEffect(() => {
-    getFavoriteMovies()
+    getFavoriteMovies();
   }, [])
 
   // Получение списка сохраненных фильмов
@@ -267,7 +275,6 @@ function App() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
         setFavoriteMovie(data)
-        localStorage.setItem("favotireMovies", JSON.stringify(favoriteMovie));
         //console.log(data)
       })
       .catch((err) => {
@@ -294,8 +301,7 @@ function App() {
 
   function searchSavedMovies(valueInSave) {
     if (favoriteMovie.length === 0) {
-      const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies"));
-      setFavoriteMovie(favoriteMovies);
+      setFavoriteMovie();
     } else {
       const result = filteredMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
       setFavoriteMovie(result);
@@ -343,7 +349,6 @@ function App() {
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
               errorMessage={errorMessage}
-              //isSaveMovie={isSaveMovie}
             />
           } />
 

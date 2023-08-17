@@ -40,7 +40,7 @@ function Login ({ handleLogin, errorMessage }) {
                     minLength={6}
                     maxLength={30}
                     onChange={handleChange}
-                    required
+                    required=""
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.email}</span>
               </label>
@@ -56,7 +56,7 @@ function Login ({ handleLogin, errorMessage }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required
+                    required=""
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.password}</span>
               </label>

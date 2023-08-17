@@ -42,7 +42,7 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
             minLength={2}
             maxLength={30}
             onChange={handleChange}
-            required
+            required=""
           />
         </label>
         <label className="popupEditProfile__field">
@@ -57,7 +57,7 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
             minLength={6}
             maxLength={30}
             onChange={handleChange}
-            require
+            require=""
           />
         </label>
         <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{errorMessage}</span></div>

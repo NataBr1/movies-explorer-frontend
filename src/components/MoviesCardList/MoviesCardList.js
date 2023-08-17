@@ -4,7 +4,14 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 
 
-function MoviesCardList({ movies, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie, isSaveMovie }) {
+function MoviesCardList({
+  movies,
+  saveFavoriteMovie,
+  deleteFavoriteMovie,
+  favoriteMovie
+})
+
+{
   const location = useLocation();
   const [showMovies, setShowMovies] = React.useState(0);
 
@@ -45,8 +52,7 @@ function MoviesCardList({ movies, saveFavoriteMovie, deleteFavoriteMovie, favori
               movie={movie}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={deleteFavoriteMovie}
-              favoriteMovie={favoriteMovie}
-              isSaveMovie={isSaveMovie} />
+              favoriteMovie={favoriteMovie} />
           )
         })}
       </ul>

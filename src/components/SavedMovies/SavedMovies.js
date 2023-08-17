@@ -20,10 +20,11 @@ function SavedMovies ({
   movies,
   deleteFavoriteMovie,
   favoriteMovie,
-  getFavoriteMovies
-}) {
+  getFavoriteMovies,
+  errorMessage
+})
 
-
+{
   return (
     <div className="savedMovies">
 
@@ -41,6 +42,8 @@ function SavedMovies ({
           checkBox={checkBox}
           setCheckBox={setCheckBox}
           getFavoriteMovies={getFavoriteMovies} />
+
+        {errorMessage ? (<p className="search__error">{errorMessage}</p>) : ""}
 
         <MoviesCardList
           movies={movies}

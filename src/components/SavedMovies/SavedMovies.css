@@ -11,8 +11,20 @@
   padding-bottom: 220px;
 }
 
+.search__error {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #8b8b8b;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .savedMovies__box {
     padding-bottom: 140px;
+  }
+
+  .search__error {
+    font-size: 18px;
   }
 }

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 
-function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie }) {
+function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie, isLoading }) {
   const location = useLocation();
   const currentUser = React.useContext(CurrentUserContext);
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
@@ -59,7 +59,7 @@ function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMov
         <img className="moviesCard__image" src={location.pathname === '/saved-movies' ? movie.image : `https://api.nomoreparties.co${movie.image.url}`} alt={movie.description} />
       </a>
 
-    {/* Пока не отпредилась как лучше написать, и так и так красиво */}
+    {/* Пока не опредилась как лучше написать, и так и так красиво */}
       {
         location.pathname === "/saved-movies"
           ? <button className="moviesCard__button-delete" type="button" onClick={deleteMovie}></button>
