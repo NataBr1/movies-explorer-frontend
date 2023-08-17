@@ -4,7 +4,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 
 
-function MoviesCardList({ movies, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie }) {
+function MoviesCardList({ movies, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie, isSaveMovie }) {
   const location = useLocation();
   const [showMovies, setShowMovies] = React.useState(0);
 
@@ -38,29 +38,17 @@ function MoviesCardList({ movies, saveFavoriteMovie, deleteFavoriteMovie, favori
   return (
     <section className="moviesCardList">
       <ul className="moviesCardList__list">
-        {location.pathname === "/movies" ? (
-          movies.slice(0, showMovies).map((card) => {
+        {movies.slice(0, showMovies).map((movie) => {
           return (
             <MoviesCard
-              key={card.id || card.movieId}
-              card={card}
+              key={movie.id || movie.movieId}
+              movie={movie}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={deleteFavoriteMovie}
-              favoriteMovie={favoriteMovie} />
+              favoriteMovie={favoriteMovie}
+              isSaveMovie={isSaveMovie} />
           )
-        })
-        ) : (
-            movies.map((card) => {
-            return (
-              <MoviesCard
-                key={card.id || card.movieId}
-                card={card}
-                //saveFavoriteMovie={saveFavoriteMovie}
-                deleteFavoriteMovie={deleteFavoriteMovie}
-                favoriteMovie={favoriteMovie} />
-            )})
-        )}
-
+        })}
       </ul>
       <div className="movies__button-box">
           {movies.length > showMovies && location.pathname === "/movies" ? (

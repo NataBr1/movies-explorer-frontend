@@ -21,7 +21,7 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [favoriteMovie, setFavoriteMovie] = React.useState([]);
   const [searchMovies, setSearchMovies] = React.useState([]);
-  //const [searchFavMovies, setSearchFavMovies] = React.useState([]);
+  const [searchFavMovies, setSearchFavMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -30,6 +30,7 @@ function App() {
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  //const [isSaveMovie, setIsSaveMovie] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -121,7 +122,7 @@ function App() {
 
   // Выход из аккаунта
   function signOut() {
-    localStorage.clear();
+    localStorage.clear(); // вроде клиар, но плохо чистит и черерз раз, почистим вручную
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('request');
     localStorage.removeItem('switchStatus');
@@ -132,6 +133,7 @@ function App() {
     setMovies([]);
     setFavoriteMovie([]);
     setSearchMovies([]);
+    setErrorMessage("");
     navigate('/');
   }
 
@@ -237,18 +239,35 @@ function App() {
     mainApi.addCard(movie)
       .then((data) => {
         setFavoriteMovie([data, ...favoriteMovie])
-        console.log(data)
+        //console.log(data)
       })
       .catch((err) => {
         console.log(`${err}`);
       })
     }
 
+  // Удаление фильма из избранных
+  function handleCardDelete(card) {
+    const savedCard = favoriteMovie.find((item) => item.movieId === card.id || item.movieId === card.movieId);
+    mainApi.deleteCard(savedCard._id)
+      .then(() => {
+        setFavoriteMovie((state) => state.filter((item) => item._id !== card._id));
+      })
+      .catch((err) => {
+        console.log(`${err}`);
+      })
+  }
+
+  React.useEffect(() => {
+    getFavoriteMovies()
+  }, [])
+
   // Получение списка сохраненных фильмов
   function getFavoriteMovies() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
         setFavoriteMovie(data)
+        localStorage.setItem("favotireMovies", JSON.stringify(favoriteMovie));
         //console.log(data)
       })
       .catch((err) => {
@@ -273,42 +292,14 @@ function App() {
   }, [checkBoxInSave]);
 
 
-  // // Выборка фильмов по ключевому слову в сохраненных фильмах
-  // function filteredMyMoviesVal(favoriteMovie, valueInSave) {
-  //   const filteredSavedMovie = favoriteMovie.filter((favoriteMovie) => {
-  //     return (
-  //       favoriteMovie.nameRU.toLowerCase().includes(valueInSave.toLowerCase()) ||
-  //       favoriteMovie.nameEN.toLowerCase().includes(valueInSave.toLowerCase())
-  //     )
-  //   })
-  //   return filteredSavedMovie;
-  // }
-
-  // function handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave) {
-  //   const moviesListInSaved = filteredMyMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
-  //   setFavoriteMovie(checkBoxInSave ? filteredMyMoviesDur(moviesListInSaved) : moviesListInSaved);
-  //   return moviesListInSaved()
-  // }
-
-  // function submitSearchMyFilm() {
-  //   getFavoriteMovies();
-  //   setFavoriteMovie(handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave))
-  // }
-
-  React.useEffect(() => {
-    getFavoriteMovies()
-  }, [])
-
-  // Удаление фильма из избранных
-  function handleCardDelete(card) {
-    const savedCard = favoriteMovie.find((item) => item.movieId === card.id || item.movieId === card.movieId);
-    mainApi.deleteCard(savedCard._id)
-      .then(() => {
-        setFavoriteMovie((state) => state.filter((item) => item._id !== card._id));
-      })
-      .catch((err) => {
-        console.log(`${err}`);
-      })
+  function searchSavedMovies(valueInSave) {
+    if (favoriteMovie.length === 0) {
+      const favoriteMovies = JSON.parse(localStorage.getItem("favoriteMovies"));
+      setFavoriteMovie(favoriteMovies);
+    } else {
+      const result = filteredMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
+      setFavoriteMovie(result);
+    }
   }
 
   // Управление попапами
@@ -351,7 +342,9 @@ function App() {
               searchMovies={searchMovies}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
-              errorMessage={errorMessage} />
+              errorMessage={errorMessage}
+              //isSaveMovie={isSaveMovie}
+            />
           } />
 
           <Route path="/saved-movies" element={
@@ -362,11 +355,13 @@ function App() {
               onClose={closePopup}
               value={valueInSave}
               setValue={setValueInSave}
-              //onSubmitSearch={submitSearchMyFilm}
+              onSubmitSearch={searchSavedMovies}
               checkBox={checkBoxInSave}
               setCheckBox={setCheckBoxInSave}
               movies={favoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
+              favoriteMovie={favoriteMovie}
+              getFavoriteMovies={getFavoriteMovies}
               />
           } />
 

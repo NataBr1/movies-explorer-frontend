@@ -7,7 +7,6 @@ import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css';
 import React from "react";
 
-
 function Movies({
   favoriteMovie,
   isLoading,
@@ -25,12 +24,11 @@ function Movies({
   deleteFavoriteMovie,
   errorMessage,
   isSaveMovie,
-  setIsSaveMovie
+  setIsSaveMovie,
+  savedMovies
 })
 
 {
-
-
 
   return (
     <div className="movies">
@@ -58,7 +56,8 @@ function Movies({
           saveFavoriteMovie={saveFavoriteMovie}
           deleteFavoriteMovie={deleteFavoriteMovie}
           isSaveMovie={isSaveMovie}
-          setIsSaveMovie={setIsSaveMovie} />
+          setIsSaveMovie={setIsSaveMovie}
+          savedMovies={savedMovies} />
 
       </main>
 

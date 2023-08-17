@@ -1,14 +1,16 @@
 import './SearchForm.css'
 import React from "react";
+import { useLocation } from 'react-router-dom';
 
-function SearchForm({ value, setValue, onSubmitSearch, onFilterMovies, checkBox, setCheckBox }) {
-
+function SearchForm({ value, setValue, onSubmitSearch, onFilterMovies, checkBox, setCheckBox, getFavoriteMovies }) {
+  const location = useLocation();
   const [error, setError] = React.useState('');
 
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!value) {
-      setError('Нужно ввести ключевое слово');
+      location.pathname === "/movies" && setError('Нужно ввести ключевое слово')
+      location.pathname === "/saved-movies" && getFavoriteMovies()
     } else {
       setError('');
       onSubmitSearch(value);

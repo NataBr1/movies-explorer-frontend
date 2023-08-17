@@ -18,7 +18,9 @@ function SavedMovies ({
   checkBox,
   setCheckBox,
   movies,
-  deleteFavoriteMovie
+  deleteFavoriteMovie,
+  favoriteMovie,
+  getFavoriteMovies
 }) {
 
 
@@ -37,11 +39,13 @@ function SavedMovies ({
           onSubmitSearch={onSubmitSearch}
           onFilterMovies={onFilterMovies}
           checkBox={checkBox}
-          setCheckBox={setCheckBox} />
+          setCheckBox={setCheckBox}
+          getFavoriteMovies={getFavoriteMovies} />
 
         <MoviesCardList
           movies={movies}
-          deleteFavoriteMovie={deleteFavoriteMovie} />
+          deleteFavoriteMovie={deleteFavoriteMovie}
+          favoriteMovie={favoriteMovie} />
 
         <div className="savedMovies__box" />
 
