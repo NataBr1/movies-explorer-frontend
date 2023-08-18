@@ -20,6 +20,7 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   transition: all .3s linear;
+  z-index: 2;
 }
 
 .popup__container {

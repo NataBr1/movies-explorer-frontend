@@ -95,6 +95,7 @@ function App() {
         setCurrentUser(user);
         setIsInfoTooltipOpen(true);
         setTextInfo("Данные успешно изменены!")
+        setErrorMessage('')
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -381,6 +382,7 @@ function App() {
               isOpen={isPopupMenu}
               onClick={handlePopupMenuClick}
               errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
               signOut={signOut} />
             }/>
 

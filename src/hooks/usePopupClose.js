@@ -7,6 +7,8 @@ function usePopupClose(isOpen, closePopup) {
     const handleOverlay = (event) => {
       if (event.target.classList.contains("popup_opened")) {
         closePopup();
+      } else if (event.target.classList.contains("popupEditProfile_opened")) {
+        closePopup();
       }
     };
 
