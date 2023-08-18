@@ -2,6 +2,15 @@ import './MoviesCardList.css'
 import React from "react";
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
+import {
+  SCREEN_L,
+  SCREEN_M,
+  SHOW_CARDS_FOR_L,
+  SHOW_CARDS_FOR_M,
+  SHOW_CARDS_FOR_S,
+  PLUS_FOR_L,
+  PLUS_FOR_MS
+} from "../../utils/constants"
 
 
 function MoviesCardList({
@@ -17,12 +26,12 @@ function MoviesCardList({
 
   function count() {
     const display = window.innerWidth;
-    if (display > 1024) {
-      setShowMovies(12);
-    } else if (display > 750) {
-      setShowMovies(8);
+    if (display > SCREEN_L) {
+      setShowMovies(SHOW_CARDS_FOR_L);
+    } else if (display > SCREEN_M) {
+      setShowMovies(SHOW_CARDS_FOR_M);
     } else {
-      setShowMovies(5);
+      setShowMovies(SHOW_CARDS_FOR_S);
     }
   }
 
@@ -33,12 +42,12 @@ function MoviesCardList({
 
   function showMore() {
     const display = window.innerWidth;
-    if (display > 1024) {
-      setShowMovies(showMovies + 3);
-    } else if (display > 750) {
-      setShowMovies(showMovies + 2);
+    if (display > SCREEN_L) {
+      setShowMovies(showMovies + PLUS_FOR_L);
+    } else if (display > SCREEN_M) {
+      setShowMovies(showMovies + PLUS_FOR_MS);
     } else {
-      setShowMovies(showMovies + 2);
+      setShowMovies(showMovies + PLUS_FOR_MS);
     }
   }
 

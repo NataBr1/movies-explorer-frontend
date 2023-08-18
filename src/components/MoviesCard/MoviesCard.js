@@ -2,7 +2,7 @@ import './MoviesCard.css'
 import React from "react";
 import { useLocation } from 'react-router-dom';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
+import { apiMovieImg } from "../../utils/constants";
 
 function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie, isLoading }) {
   const location = useLocation();
@@ -56,7 +56,7 @@ function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMov
       <h2 className="moviesCard__title" title={movie.nameRU}>{movie.nameRU}</h2>
       <p className="moviesCard__diration">{`${showDurationHour(movie.duration)} ${showDurationMin(movie.duration)}`}</p>
       <a className="moviesCard__image-link" href={movie.trailerLink} target="_blank" rel="noreferrer">
-        <img className="moviesCard__image" src={location.pathname === '/saved-movies' ? movie.image : `https://api.nomoreparties.co${movie.image.url}`} alt={movie.description} />
+        <img className="moviesCard__image" src={location.pathname === '/saved-movies' ? movie.image : `${apiMovieImg}${movie.image.url}`} alt={movie.description} />
       </a>
 
     {/* Пока не опредилась как лучше написать, и так и так красиво */}

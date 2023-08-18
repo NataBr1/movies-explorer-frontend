@@ -1,3 +1,6 @@
+import { apiBeckend } from "../utils/constants";
+import { apiMovieImg } from "../utils/constants";
+
 class MainApi {
   constructor(options) {
     this._myUrl = options.myUrl;
@@ -87,8 +90,8 @@ class MainApi {
         duration: selectMovie.duration,
         year: selectMovie.year,
         description: selectMovie.description,
-        image: `https://api.nomoreparties.co${selectMovie.image.url}`,
-        thumbnail: `https://api.nomoreparties.co${selectMovie.image.formats.thumbnail.url}`,
+        image: `${apiMovieImg}${selectMovie.image.url}`,
+        thumbnail: `${apiMovieImg}${selectMovie.image.formats.thumbnail.url}`,
         trailerLink: selectMovie.trailerLink,
         movieId: selectMovie.id,
         nameRU: selectMovie.nameRU,
@@ -109,7 +112,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  myUrl: 'http://localhost:3000',
+  myUrl: apiBeckend,
   headers: {
     'Content-Type': 'application/json'
   }
