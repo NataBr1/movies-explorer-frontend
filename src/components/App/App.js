@@ -29,6 +29,7 @@ function App() {
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [textInfo, setTextInfo] = React.useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,8 +54,9 @@ function App() {
     setErrorMessage('')
     mainApi.register({ name, email, password })
       .then(() => {
-        navigate("/signin", { replace: true });
+        handleLogin ({ email, password })
         setIsInfoTooltipOpen(true);
+        setTextInfo("Вы успешно зарегистрировались!")
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -91,7 +93,8 @@ function App() {
     mainApi.setUserInfo(data)
       .then((user) => {
         setCurrentUser(user);
-        closePopup();
+        setIsInfoTooltipOpen(true);
+        setTextInfo("Данные успешно изменены!")
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -348,8 +351,7 @@ function App() {
               searchMovies={searchMovies}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
-              errorMessage={errorMessage}
-            />
+              errorMessage={errorMessage} />
           } />
 
           <Route path="/saved-movies" element={
@@ -366,8 +368,7 @@ function App() {
               movies={favoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
               favoriteMovie={favoriteMovie}
-              getFavoriteMovies={getFavoriteMovies}
-              />
+              getFavoriteMovies={getFavoriteMovies} />
           } />
 
           <Route path="/profile" element={
@@ -385,12 +386,14 @@ function App() {
 
           <Route path="/signin" element={
             <Login
+              loggedIn={loggedIn}
               handleLogin={handleLogin}
               errorMessage={errorMessage} />
           } />
 
           <Route path="/signup" element={
             <Register
+              loggedIn={loggedIn}
               handleRegister={handleRegister}
               errorMessage={errorMessage} />
           } />
@@ -404,6 +407,7 @@ function App() {
         <InfoTooltip
             isOpen={isInfoTooltipOpen}
             onClose={closePopup}
+            textInfo={textInfo}
         />
 
       </div>

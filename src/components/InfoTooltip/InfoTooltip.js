@@ -3,7 +3,7 @@ import './InfoTooltip.css';
 import usePopupClose from "../../hooks/usePopupClose";
 import logo from "../../images/logo.svg"
 
-function InfoTooltip ({ isOpen, onClose }) {
+function InfoTooltip ({ isOpen, onClose, textInfo }) {
 
   usePopupClose(isOpen, onClose);
 
@@ -14,7 +14,7 @@ function InfoTooltip ({ isOpen, onClose }) {
             src={logo}
             alt="Изображение логотипа"
           />
-          <h2 className="autorize__res-text">Вы успешно зарегистрировались!</h2>
+          <h2 className="autorize__res-text">{textInfo}</h2>
           <button
             className="popup__closed"
             type="button"

@@ -1,15 +1,22 @@
 import './Register.css'
 import React from "react";
 import logo from '../../images/logo.svg';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFormValidation from '../../utils/useFormValidation';
 
-function Register ({ handleRegister, errorMessage }) {
+function Register ({ handleRegister, errorMessage, loggedIn }) {
   const { values, isValid, handleChange, errors, resetForm } = useFormValidation({
     name: '',
     email: '',
     password: '',
   })
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      navigate('/movies');
+    }
+  }, [loggedIn]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -42,7 +49,7 @@ function Register ({ handleRegister, errorMessage }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required=""
+                    required
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.name}</span>
               </label>
@@ -58,7 +65,7 @@ function Register ({ handleRegister, errorMessage }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required=""
+                    required
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.email}</span>
               </label>

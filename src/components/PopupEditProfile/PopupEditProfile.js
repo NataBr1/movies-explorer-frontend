@@ -1,20 +1,15 @@
 import './PopupEditProfile.css'
 import React from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-//import { useForm } from "../../hooks/useForm"
 import useFormValidation from '../../utils/useFormValidation';
 
 function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
   const currentUser = React.useContext(CurrentUserContext);
-
-  const { values, setValues, handleChange, errors } = useFormValidation({
-    name: '',
-    email: '',
-  })
+  const { values, isValid, setValues, handleChange, errors } = useFormValidation()
 
   function handleSubmit(e) {
     e.preventDefault();
-      onUpdateUser({
+    onUpdateUser({
         name: values.name,
         email: values.email,
     });
@@ -42,7 +37,7 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
             minLength={2}
             maxLength={30}
             onChange={handleChange}
-            required=""
+            required
           />
         </label>
         <label className="popupEditProfile__field">
@@ -54,14 +49,25 @@ function PopupEditProfile({ isOpen, onUpdateUser, errorMessage }) {
             defaultValue={currentUser.email}
             placeholder="Введите свой e-mail"
             autoComplete="off"
-            minLength={6}
+            minLength={2}
             maxLength={30}
             onChange={handleChange}
-            require=""
+            required
           />
         </label>
-        <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{errorMessage}</span></div>
-        <button className="popupEditProfile__save" type="submit">Сохранить</button>
+
+        {/* Здесь такая ерундень, но я потратила на нее почти сутки и по-другому пока не удалось реализовать. Когда-нибудь, я это исправлю */}
+        <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{
+            (values.name === currentUser.name && values.email === currentUser.email)
+              ? "Необходимо изменить имя или email"
+              : errors?.name || errors?.email || errorMessage }</span></div>
+        <button
+            className={!isValid || (values.name === currentUser.name && values.email === currentUser.email)
+              ? "popupEditProfile__save popupEditProfile__save_inactive"
+              : "popupEditProfile__save"}
+            type="submit"
+            disabled={!isValid}
+        >Сохранить</button>
       </form>
     </section>
   )

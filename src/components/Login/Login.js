@@ -1,14 +1,21 @@
 import './Login.css'
 import React from "react";
 import logo from '../../images/logo.svg';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFormValidation from '../../utils/useFormValidation';
 
-function Login ({ handleLogin, errorMessage }) {
+function Login ({ handleLogin, errorMessage, loggedIn }) {
   const { values, isValid, handleChange, errors, resetForm } = useFormValidation({
     email: '',
     password: '',
   })
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      navigate('/movies');
+    }
+  }, [loggedIn]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,10 +44,10 @@ function Login ({ handleLogin, errorMessage }) {
                     value={values.email || ""}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
-                    minLength={6}
+                    minLength={2}
                     maxLength={30}
                     onChange={handleChange}
-                    required=""
+                    required
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.email}</span>
               </label>
@@ -53,10 +60,10 @@ function Login ({ handleLogin, errorMessage }) {
                     value={values.password || ""}
                     placeholder="Введите пароль"
                     autoComplete="off"
-                    minLength={2}
+                    minLength={6}
                     maxLength={30}
                     onChange={handleChange}
-                    required=""
+                    required
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.password}</span>
               </label>
