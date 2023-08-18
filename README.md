@@ -19,13 +19,13 @@
 **Используемые технологии**
 
 <div>
-  <img src="https://img.shields.io/badge/HTML5-202020?style=for-the-badge&logo=html5&logoColor=white">
-  <img src="https://img.shields.io/badge/CSS3-202020?style=for-the-badge&logo=css3&logoColor=white">
-  <img src="https://img.shields.io/badge/JavaScript-202020?style=for-the-badge&logo=javascript&logoColor=F7DF1E">
+  <img src="https://img.shields.io/badge/HTML5-202020?style=for-the-badge&logo=html5&logoColor=3DDC84">
+  <img src="https://img.shields.io/badge/CSS3-202020?style=for-the-badge&logo=css3&logoColor=3DDC84">
+  <img src="https://img.shields.io/badge/JavaScript-202020?style=for-the-badge&logo=javascript&logoColor=3DDC84">
   <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB">
   <img src="https://img.shields.io/badge/React_Router-202020?style=for-the-badge&logo=react-router&logoColor=3DDC84">
   <img src="https://img.shields.io/badge/express_js-202020?style=for-the-badge&logo=nodedotjs&logoColor=3DDC84">
-  <img src="https://img.shields.io/badge/express_js-202020?style=for-the-badge&logo=mongodb&logoColor=3DDC84">
+  <img src="https://img.shields.io/badge/mongoDB-202020?style=for-the-badge&logo=mongodb&logoColor=3DDC84">
 </div>
 
 ***
