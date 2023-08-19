@@ -30,7 +30,7 @@ function App() {
   const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-  const [textInfo, setTextInfo] = React.useState("");
+  const [textInfo, setTextInfo] = React.useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,13 +50,19 @@ function App() {
     }
   }, [loggedIn]);
 
+  // Закрываем окошко с информацией
+  function startInfoTooltip() {
+    setIsInfoTooltipOpen(true);
+    setTimeout(() => setIsInfoTooltipOpen(false), 1200);
+  }
+
   // Регистрация пользователя
   function handleRegister ({ name, email, password }) {
     setErrorMessage('')
     mainApi.register({ name, email, password })
       .then(() => {
         handleLogin ({ email, password })
-        setIsInfoTooltipOpen(true);
+        startInfoTooltip();
         setTextInfo("Вы успешно зарегистрировались!")
       })
       .catch((err) => {
@@ -68,6 +74,7 @@ function App() {
         }
       })
   }
+
   // Авторизация пользователя
   function handleLogin ({ email, password }) {
     setErrorMessage('')
@@ -76,6 +83,8 @@ function App() {
           localStorage.setItem('loggedIn', true);
           setLoggedIn(true);
           setCurrentUser(user);
+          startInfoTooltip();
+          setTextInfo("Добро пожаловать!")
           navigate("/movies", {replace: true});
       })
       .catch((err) => {
@@ -94,7 +103,7 @@ function App() {
     mainApi.setUserInfo(data)
       .then((user) => {
         setCurrentUser(user);
-        setIsInfoTooltipOpen(true);
+        startInfoTooltip();
         setTextInfo("Данные успешно изменены!")
         setErrorMessage('')
       })
@@ -136,7 +145,13 @@ function App() {
     setMovies([]);
     setFavoriteMovie([]);
     setSearchMovies([]);
-    setErrorMessage("");
+    setErrorMessage('');
+    setErrorMessageInSave('')
+    setCheckBox(false);
+    setCheckBoxInSave(false);
+    setValue('');
+    setValueInSave('');
+    setTextInfo('');
     navigate('/');
   }
 
@@ -182,6 +197,7 @@ function App() {
         setErrorMessage("Ничего не найдено")
       } else {
         setSearchMovies(filteredMoviesDur(movies));
+
       }
     } else {
       setSearchMovies(movies);
@@ -237,6 +253,7 @@ function App() {
     }
   }, []);
 
+  // Достаем из localStorage значение инпута поиска фильма
   React.useEffect(() => {
     if (localStorage.getItem("request")) {
       const dataValue = JSON.stringify(localStorage.getItem("request"));
@@ -289,25 +306,36 @@ function App() {
     return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= 40);
   }
 
+   // Выборка фильмов по ключевому слову
+   function filteredMyMoviesVal(favoriteMovie, valueInSave) {
+    const filtered = favoriteMovie.filter((favoriteFilm) => {
+      return (
+        favoriteFilm.nameRU.toLowerCase().includes(valueInSave.toLowerCase()) ||
+        favoriteFilm.nameEN.toLowerCase().includes(valueInSave.toLowerCase())
+      )
+    })
+    return filtered;
+  }
+
   // Отображаем короткометражки, если есть, а если нет - сообщение
   function handleCheckBoxInSave() {
     setCheckBoxInSave(!checkBoxInSave);
     if (!checkBoxInSave) {
-      if (filteredMyMoviesDur(favoriteMovie).length === 0) {
-        setFavoriteMovie([]);
-        setErrorMessageInSave("Ничего не найдено")
+      if (filteredMyMoviesDur(favoriteMovie).length === 0) { //если по ключевому слову ничего нет
+        setFavoriteMovie([]);                                //чистим сохраненные фильмы
+        setErrorMessageInSave("Ничего не найдено")           //выводим сообщение
       } else {
-        setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
-        setErrorMessageInSave("");
+        setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));//иначе показыаем подходящие под запрос фильмы
+        setErrorMessageInSave("");                           //убираем сообщение
       }
     } else {
-      getFavoriteMovies()
+      getFavoriteMovies()                                    //при выключении чекбокса показываем сохраненные фильмы и чистим сообщение
       setErrorMessageInSave("")
     }
   }
 
   function handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave) {
-    const myMoviesList = filteredMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
+    const myMoviesList = filteredMyMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
     setMovies(myMoviesList);
     setFavoriteMovie(checkBoxInSave ? filteredMoviesDur(myMoviesList) : myMoviesList);
     if (myMoviesList.length === 0) {

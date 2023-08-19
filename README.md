@@ -34,6 +34,8 @@
 
 Ссылка на макет в figma https://disk.yandex.ru/d/PHb_Kpshd81_iA
 
+Ссылка на пул-реквест https://github.com/NataBr1/movies-explorer-frontend/pull/2
+
 IP 51.250.19.226
 
 Frontend https://movies.nomoredomains.xyz

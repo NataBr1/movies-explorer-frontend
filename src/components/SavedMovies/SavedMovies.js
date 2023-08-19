@@ -26,6 +26,7 @@ function SavedMovies ({
 })
 
 {
+
   return (
     <div className="savedMovies">
 
