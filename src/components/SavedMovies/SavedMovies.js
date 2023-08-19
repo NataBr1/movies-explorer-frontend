@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
+import Preloader from "../Preloader/Preloader";
 import './SavedMovies.css';
 import React from "react";
 
@@ -17,11 +18,11 @@ function SavedMovies ({
   onFilterMovies,
   checkBox,
   setCheckBox,
-  movies,
-  deleteFavoriteMovie,
   favoriteMovie,
+  deleteFavoriteMovie,
   getFavoriteMovies,
-  errorMessage
+  errorMessage,
+  isLoading
 })
 
 {
@@ -41,14 +42,20 @@ function SavedMovies ({
           onFilterMovies={onFilterMovies}
           checkBox={checkBox}
           setCheckBox={setCheckBox}
-          getFavoriteMovies={getFavoriteMovies} />
+          getFavoriteMovies={getFavoriteMovies}
+          isLoading={isLoading} />
 
-        {errorMessage ? (<p className="search__error">{errorMessage}</p>) : ""}
+        {isLoading ? <Preloader /> : ""}
+        {isLoading ? "" :
+          (errorMessage ? (<p className="search__error">{errorMessage}</p>) : "")
+        }
 
-        <MoviesCardList
-          movies={movies}
-          deleteFavoriteMovie={deleteFavoriteMovie}
-          favoriteMovie={favoriteMovie} />
+        {isLoading ? "" :
+          <MoviesCardList
+            movies={favoriteMovie}
+            deleteFavoriteMovie={deleteFavoriteMovie}
+            favoriteMovie={favoriteMovie} />
+        }
 
         <div className="savedMovies__box" />
 

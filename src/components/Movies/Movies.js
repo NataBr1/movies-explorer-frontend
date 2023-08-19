@@ -41,7 +41,8 @@ function Movies({
           onSubmitSearch={onSubmitSearch}
           onFilterMovies={onFilterMovies}
           checkBox={checkBox}
-          setCheckBox={setCheckBox} />
+          setCheckBox={setCheckBox}
+          isLoading={isLoading} />
 
         {isLoading ? <Preloader /> : ""}
         {isLoading ? "" :

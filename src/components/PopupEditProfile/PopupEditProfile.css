@@ -1,38 +1,25 @@
 .popupEditProfile {
   visibility: hidden;
+  opacity: 0;
   width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-}
-
-.popupEditProfile_opened {
-  visibility: visible;
-  opacity: 1;
+  background-color: rgba(32, 32, 32, 0);
   z-index: 2;
   display: flex;
   justify-content: center;
 }
 
-.popupEditProfile__container {
-  margin-top: 303px;
-}
-
-/* .popupEditProfile {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .popupEditProfile_opened {
   visibility: visible;
   opacity: 1;
-} */
+}
+
+.popupEditProfile__container {
+  margin-top: 302px;
+}
 
 .popupEditProfile__form {
   width: 410px;

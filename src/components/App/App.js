@@ -16,6 +16,7 @@ import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
 function App() {
   const [errorMessage, setErrorMessage] = React.useState('')
+  const [errorMessageInSave, setErrorMessageInSave] = React.useState('')
   const [isPopupMenu, setIsPopupMenu] = React.useState(false);
   const [isPopupEditProfile, setIsPopupEditProfile] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
@@ -198,14 +199,11 @@ function App() {
     if (localStorage.getItem("allMovies")) { // если уже есть список всех фильмов, возьмем оттуда
       const allMovies = JSON.parse(localStorage.getItem("allMovies"));
       handleFilteredMovies(allMovies, value, checkBox);
-      console.log("В localStorage есть фильмы")
     } else { // или включаем прелоадер и тянем все фильмы с апи и сохраняем в localStorage
       moviesApi.getMoviesList()
         .then((allMovies)=> {
           handleFilteredMovies(allMovies, value, checkBox);
           localStorage.setItem("allMovies", JSON.stringify(allMovies));
-          console.log(allMovies);
-          console.log(searchMovies);
         })
         .catch((err) => {
           setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
@@ -270,6 +268,7 @@ function App() {
       })
   }
 
+  // получаем сохраненные фильмы сразу переходя во вкладку "сохр.фильмы"
   React.useEffect(() => {
     getFavoriteMovies();
   }, [])
@@ -279,37 +278,48 @@ function App() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
         setFavoriteMovie(data)
-        //console.log(data)
       })
       .catch((err) => {
         console.log(`${err}`);
       })
   }
 
-  // Выборка фильмов по чекбоксу в сохраненных фильмах
-  function filteredMyMoviesDur(searchMovies) {
-    if (checkBoxInSave) {
-      return searchMovies.filter((searchMovies) => searchMovies.duration <= 40);
-    }
-    return searchMovies;
+  // Фильтруем сохраненные фильмы по длительности
+  function filteredMyMoviesDur (favoriteMovie) {
+    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= 40);
   }
 
-  React.useEffect(() => {
-    if (checkBoxInSave) {
-      setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
+  // Отображаем короткометражки, если есть, а если нет - сообщение
+  function handleCheckBoxInSave() {
+    setCheckBoxInSave(!checkBoxInSave);
+    if (!checkBoxInSave) {
+      if (filteredMyMoviesDur(favoriteMovie).length === 0) {
+        setFavoriteMovie([]);
+        setErrorMessageInSave("Ничего не найдено")
+      } else {
+        setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));
+        setErrorMessageInSave("");
+      }
     } else {
       getFavoriteMovies()
+      setErrorMessageInSave("")
     }
-  }, [checkBoxInSave]);
+  }
 
+  function handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave) {
+    const myMoviesList = filteredMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
+    setMovies(myMoviesList);
+    setFavoriteMovie(checkBoxInSave ? filteredMoviesDur(myMoviesList) : myMoviesList);
+    if (myMoviesList.length === 0) {
+      setErrorMessageInSave("Ничего не найдено");
+    } else {
+      setErrorMessageInSave("");
+    }
+  }
 
   function searchSavedMovies(valueInSave) {
-    if (favoriteMovie.length === 0) {
-      setFavoriteMovie();
-    } else {
-      const result = filteredMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
-      setFavoriteMovie(result);
-    }
+    startLoading();
+    handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave);
   }
 
   // Управление попапами
@@ -364,12 +374,15 @@ function App() {
               value={valueInSave}
               setValue={setValueInSave}
               onSubmitSearch={searchSavedMovies}
+              onFilterMovies={handleCheckBoxInSave}
               checkBox={checkBoxInSave}
               setCheckBox={setCheckBoxInSave}
-              movies={favoriteMovie}
-              deleteFavoriteMovie={handleCardDelete}
               favoriteMovie={favoriteMovie}
-              getFavoriteMovies={getFavoriteMovies} />
+              deleteFavoriteMovie={handleCardDelete}
+              getFavoriteMovies={getFavoriteMovies}
+              isLoading={isLoading}
+              errorMessage={errorMessageInSave}
+              valueInSave={valueInSave}/>
           } />
 
           <Route path="/profile" element={

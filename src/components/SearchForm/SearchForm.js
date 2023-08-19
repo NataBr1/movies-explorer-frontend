@@ -9,7 +9,8 @@ function SearchForm({
   onFilterMovies,
   checkBox,
   setCheckBox,
-  getFavoriteMovies
+  getFavoriteMovies,
+  isLoading
 })
 
 {
@@ -39,6 +40,7 @@ function SearchForm({
             placeholder="Фильм"
             value={value}
             onChange={(evt) => setValue(evt.target.value)}
+            disabled={isLoading}
           />
           <button className="searchForm__button" type="submit" />
         </div>

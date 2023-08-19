@@ -1,6 +1,6 @@
 export const apiMovie = 'https://api.nomoreparties.co/beatfilm-movies';
 export const apiMovieImg = 'https://api.nomoreparties.co';
-export const apiBeckend = 'http://localhost:3000';
+export const apiBeckend = 'https://movies.nb.nomoredomains.work';
 
 // Разрешение экрана
 export const SCREEN_L = 1024;
