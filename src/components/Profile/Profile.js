@@ -7,6 +7,7 @@ import './Profile.css'
 import React from "react";
 
 function Profile ({
+  isLoading,
   onClick,
   isOpen,
   onClose,
@@ -14,8 +15,6 @@ function Profile ({
   isOpenEditProfile,
   onCloseEditProfile,
   onUpdateUser,
-  errorMessage,
-  setErrorMessage,
   signOut
 })
 
@@ -34,11 +33,10 @@ function Profile ({
         <section className="profile__box">
 
           <PopupEditProfile
+            isLoading={isLoading}
             isOpen={isOpenEditProfile}
             onClose={onCloseEditProfile}
-            onUpdateUser={onUpdateUser}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage} />
+            onUpdateUser={onUpdateUser} />
 
           {isOpen ? "" :
             <div className={`profile__form ${isOpenEditProfile ? "profile__form_hidden": ""}`}>

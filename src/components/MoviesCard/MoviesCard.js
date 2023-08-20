@@ -56,7 +56,13 @@ function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMov
       <h2 className="moviesCard__title" title={movie.nameRU}>{movie.nameRU}</h2>
       <p className="moviesCard__diration">{`${showDurationHour(movie.duration)} ${showDurationMin(movie.duration)}`}</p>
       <a className="moviesCard__image-link" href={movie.trailerLink} target="_blank" rel="noreferrer">
-        <img className="moviesCard__image" src={location.pathname === '/saved-movies' ? movie.image : `${apiMovieImg}${movie.image.url}`} alt={movie.description} />
+        <img className="moviesCard__image"
+          src={
+            movie.image.url === undefined
+              ? movie.image
+              : location.pathname === '/saved-movies' ? movie.image : `${apiMovieImg}${movie.image.url}`
+            }
+          alt={movie.nameRU} />
       </a>
 
     {/* Пока не опредилась как лучше написать, и так и так красиво */}

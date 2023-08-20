@@ -4,8 +4,8 @@ import logo from '../../images/logo.svg';
 import { Link, useNavigate } from "react-router-dom";
 import useFormValidation from '../../utils/useFormValidation';
 
-function Register ({ handleRegister, errorMessage, loggedIn }) {
-  const { values, isValid, handleChange, errors, resetForm } = useFormValidation({
+function Register ({ handleRegister, errorMessage, loggedIn, isLoading }) {
+  const { values, isValid, handleChange, errors } = useFormValidation({
     name: '',
     email: '',
     password: '',
@@ -23,7 +23,6 @@ function Register ({ handleRegister, errorMessage, loggedIn }) {
     const { name, email, password } = values;
     if (isValid) {
       handleRegister({ name, email, password });
-      resetForm();
     }
 
   };
@@ -49,6 +48,7 @@ function Register ({ handleRegister, errorMessage, loggedIn }) {
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
+                    disabled={isLoading}
                     required
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.name}</span>
@@ -62,9 +62,11 @@ function Register ({ handleRegister, errorMessage, loggedIn }) {
                     value={values.email || ""}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
+                    pattern='^.+@.+..+$'
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
+                    disabled={isLoading}
                     required
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.email}</span>
@@ -81,12 +83,13 @@ function Register ({ handleRegister, errorMessage, loggedIn }) {
                     minLength={6}
                     maxLength={30}
                     onChange={handleChange}
+                    disabled={isLoading}
                     required
                   />
                   <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.password}</span>
               </label>
               <div className="register__box-error"><span className="register__text-error">{errorMessage}</span></div>
-              <button className={`register__button ${!isValid ? "register__button_inactive" : ""}`} type="submit" disabled={!isValid}>Зарегистрироваться</button>
+              <button className={`register__button ${!isValid ? "register__button_inactive" : ""}`} type="submit" disabled={!isValid || isLoading}>Зарегистрироваться</button>
               <p className="register__text">Уже зарегистрированы? <Link to="/signin" className="register__link">Войти</Link></p>
           </form>
 

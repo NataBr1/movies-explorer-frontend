@@ -13,6 +13,7 @@ import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import { SHORT_FILM } from "../../utils/constants"
 
 function App() {
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -159,11 +160,6 @@ function App() {
     navigate('/');
   }
 
-  function startLoading() {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
-  }
-
   // Выборка фильмов по ключевому слову
   function filteredMoviesVal(movies, value) {
     const filtered = movies.filter((movie) => {
@@ -177,7 +173,7 @@ function App() {
 
   // Выборка фильмов по чекбоксу
   function filteredMoviesDur(movies) {
-    return movies.filter((movie) => movie.duration <= 40);
+    return movies.filter((movie) => movie.duration <= SHORT_FILM);
   }
 
   function handleFilteredMovies(allMovies, value, checkBox) {
@@ -213,13 +209,13 @@ function App() {
   // Обработчик сабмита поиска фильмов
   function submitSearch(value) {
     setErrorMessage("");
-    startLoading();
     localStorage.setItem("request", value); //сохраняем текст запроса
     localStorage.setItem("switchStatus", checkBox); // сохраняем статус чекбокса
     if (localStorage.getItem("allMovies")) { // если уже есть список всех фильмов, возьмем оттуда
       const allMovies = JSON.parse(localStorage.getItem("allMovies"));
       handleFilteredMovies(allMovies, value, checkBox);
     } else { // или включаем прелоадер и тянем все фильмы с апи и сохраняем в localStorage
+      setIsLoading(true);
       moviesApi.getMoviesList()
         .then((allMovies)=> {
           handleFilteredMovies(allMovies, value, checkBox);
@@ -289,8 +285,6 @@ function App() {
     mainApi.addCard(movie)
       .then((data) => {
         setArrow([data, ...favoriteMovies])
-        //setFavoriteMovies(arrow)
-        //console.log(data)
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -303,7 +297,6 @@ function App() {
     mainApi.deleteCard(savedCard._id)
       .then(() => {
         setArrow((state) => state.filter((item) => item._id !== card._id));
-        //setFavoriteMovies(arrow)
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -312,7 +305,7 @@ function App() {
 
   // Фильтруем сохраненные фильмы по длительности
   function filteredMyMoviesDur (favoriteMovie) {
-    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= 40)
+    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= SHORT_FILM)
   }
 
    // Выборка фильмов по ключевому слову
@@ -355,11 +348,16 @@ function App() {
   }
 
   React.useEffect(()=> {
+    setValueInSave('')
     setFavoriteMovies(arrow)
-  }, [arrow])
+    setErrorMessageInSave('')
+  }, [location, arrow])
+
+  // React.useEffect(()=> {
+  //   setFavoriteMovies(arrow)
+  // }, [arrow])
 
   function searchSavedMovies(valueInSave) {
-    startLoading();
     handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave);
   }
 
@@ -432,6 +430,7 @@ function App() {
 
           <Route path="/profile" element={
             <ProtectedRoute element={Profile}
+              isLoading={isLoading}
               loggedIn={loggedIn}
               isOpenEditProfile={isPopupEditProfile}
               onCloseEditProfile={closePopup}
@@ -439,13 +438,12 @@ function App() {
               onUpdateUser={handleUpdateUser}
               isOpen={isPopupMenu}
               onClick={handlePopupMenuClick}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
               signOut={signOut} />
             }/>
 
           <Route path="/signin" element={
             <Login
+              isLoading={isLoading}
               loggedIn={loggedIn}
               handleLogin={handleLogin}
               errorMessage={errorMessage} />
@@ -453,6 +451,7 @@ function App() {
 
           <Route path="/signup" element={
             <Register
+              isLoading={isLoading}
               loggedIn={loggedIn}
               handleRegister={handleRegister}
               errorMessage={errorMessage} />

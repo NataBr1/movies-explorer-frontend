@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormValidation from '../../utils/useFormValidation';
 import usePopupClose from "../../hooks/usePopupClose";
 
-function PopupEditProfile({ isOpen, onClose, onUpdateUser, errorMessage, setErrorMessage }) {
+function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
   usePopupClose(isOpen, onClose);
 
   const currentUser = React.useContext(CurrentUserContext);
@@ -41,6 +41,7 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, errorMessage, setErro
               minLength={2}
               maxLength={30}
               onChange={handleChange}
+              disabled={isLoading}
               required
             />
           </label>
@@ -53,9 +54,11 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, errorMessage, setErro
               defaultValue={currentUser.email}
               placeholder="Введите свой e-mail"
               autoComplete="off"
+              pattern='^.+@.+..+$'
               minLength={2}
               maxLength={30}
               onChange={handleChange}
+              disabled={isLoading}
               required
             />
           </label>
@@ -64,13 +67,13 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, errorMessage, setErro
           <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{
               (values.name === currentUser.name && values.email === currentUser.email)
                 ? "Необходимо изменить имя или email"
-                : errors?.name || errors?.email || errorMessage }</span></div>
+                : errors?.name || errors?.email }</span></div>
           <button
               className={!isValid || (values.name === currentUser.name && values.email === currentUser.email)
                 ? "popupEditProfile__save popupEditProfile__save_inactive"
                 : "popupEditProfile__save"}
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || isLoading}
               onClick={onClose}
           >Сохранить</button>
         </form>

@@ -4,8 +4,8 @@ import logo from '../../images/logo.svg';
 import { Link, useNavigate } from "react-router-dom";
 import useFormValidation from '../../utils/useFormValidation';
 
-function Login ({ handleLogin, errorMessage, loggedIn }) {
-  const { values, isValid, handleChange, errors, resetForm } = useFormValidation({
+function Login ({ handleLogin, errorMessage, loggedIn, isLoading }) {
+  const { values, isValid, handleChange, errors } = useFormValidation({
     email: '',
     password: '',
   })
@@ -22,7 +22,6 @@ function Login ({ handleLogin, errorMessage, loggedIn }) {
     const { email, password } = values;
     if (isValid) {
       handleLogin({ email, password });
-      resetForm();
     }
   }
 
@@ -44,9 +43,11 @@ function Login ({ handleLogin, errorMessage, loggedIn }) {
                     value={values.email || ""}
                     placeholder="Введите свой e-mail"
                     autoComplete="off"
+                    pattern='^.+@.+..+$'
                     minLength={2}
                     maxLength={30}
                     onChange={handleChange}
+                    disabled={isLoading}
                     required
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.email}</span>
@@ -63,12 +64,13 @@ function Login ({ handleLogin, errorMessage, loggedIn }) {
                     minLength={6}
                     maxLength={30}
                     onChange={handleChange}
+                    disabled={isLoading}
                     required
                   />
                   <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.password}</span>
               </label>
               <div className="login__box-error"><span className="login__text-error">{errorMessage}</span></div>
-              <button className={`login__button ${!isValid ? "login__button_inactive" : ""}`} type="submit" disabled={!isValid}>Войти</button>
+              <button className={`login__button ${!isValid ? "login__button_inactive" : ""}`} type="submit" disabled={!isValid || isLoading}>Войти</button>
               <p className="login__text">Ещё не зарегистрированы? <Link to="/signup" className="login__link">Регистрация</Link></p>
           </form>
 
