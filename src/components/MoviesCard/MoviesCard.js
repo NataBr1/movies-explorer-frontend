@@ -4,12 +4,12 @@ import { useLocation } from 'react-router-dom';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { apiMovieImg } from "../../utils/constants";
 
-function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovie, isLoading }) {
+function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovies, isLoading }) {
   const location = useLocation();
   const currentUser = React.useContext(CurrentUserContext);
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
 
-  const markedMovie = favoriteMovie.find(
+  const markedMovie = favoriteMovies.find(
     (item) => item.nameEN === movie.nameEN && item.owner === currentUser._id
   );
 
@@ -17,7 +17,7 @@ function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMov
     if(!isSaveMovie) {
       saveFavoriteMovie(movie)
     } else {
-      const searchMovie = favoriteMovie.find(
+      const searchMovie = favoriteMovies.find(
         (item) => item.movieId === movie.id
       );
       deleteFavoriteMovie(searchMovie)

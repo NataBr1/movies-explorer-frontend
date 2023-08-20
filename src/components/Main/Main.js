@@ -11,10 +11,10 @@ import Footer from '../Footer/Footer';
 import Portfolio from '../Portfolio/Portfolio';
 import PopupMenu from '../PopupMenu/PopupMenu';
 
-function Main({ loggedIn, isOpen, onClose }) {
+function Main({ loggedIn, isOpen, onClose, onClick }) {
   return (
     <div className="main">
-      {loggedIn ? <Header classNameHeader={"header header_color"}/> : <NavTab classNameHeader={"header"}/> }
+      {loggedIn ? <Header classNameHeader={"header header_color"} onClick={onClick}/> : <NavTab classNameHeader={"header"}/> }
       <main>
         <PopupMenu isOpen={isOpen} onClose={onClose} />
         <Promo />

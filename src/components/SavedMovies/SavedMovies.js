@@ -18,7 +18,7 @@ function SavedMovies ({
   onFilterMovies,
   checkBox,
   setCheckBox,
-  favoriteMovie,
+  favoriteMovies,
   deleteFavoriteMovie,
   getFavoriteMovies,
   errorMessage,
@@ -53,9 +53,9 @@ function SavedMovies ({
 
         {isLoading ? "" :
           <MoviesCardList
-            movies={favoriteMovie}
+            movies={favoriteMovies}
             deleteFavoriteMovie={deleteFavoriteMovie}
-            favoriteMovie={favoriteMovie} />
+            favoriteMovies={favoriteMovies} />
         }
 
         <div className="savedMovies__box" />

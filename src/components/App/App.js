@@ -20,7 +20,8 @@ function App() {
   const [isPopupMenu, setIsPopupMenu] = React.useState(false);
   const [isPopupEditProfile, setIsPopupEditProfile] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
-  const [favoriteMovie, setFavoriteMovie] = React.useState([]);
+  const [arrow, setArrow] = React.useState([]);
+  const [favoriteMovies, setFavoriteMovies] = React.useState(arrow);
   const [searchMovies, setSearchMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
@@ -95,6 +96,9 @@ function App() {
           setErrorMessage("Что-то пошло не так! Попробуйте еще раз.");
         }
       })
+      .finally(()=> {
+        setErrorMessage('')
+      })
   }
 
   // Изменение данных о пользователе
@@ -143,7 +147,7 @@ function App() {
     setLoggedIn(false);
     setCurrentUser({});
     setMovies([]);
-    setFavoriteMovie([]);
+    setFavoriteMovies([]);
     setSearchMovies([]);
     setErrorMessage('');
     setErrorMessageInSave('')
@@ -261,30 +265,6 @@ function App() {
     }
   }, []);
 
-  // Сохранение фильма в избранные
-  function saveFavoriteMovie(movie) {
-    mainApi.addCard(movie)
-      .then((data) => {
-        setFavoriteMovie([data, ...favoriteMovie])
-        //console.log(data)
-      })
-      .catch((err) => {
-        console.log(`${err}`);
-      })
-    }
-
-  // Удаление фильма из избранных
-  function handleCardDelete(card) {
-    const savedCard = favoriteMovie.find((item) => item.movieId === card.id || item.movieId === card.movieId);
-    mainApi.deleteCard(savedCard._id)
-      .then(() => {
-        setFavoriteMovie((state) => state.filter((item) => item._id !== card._id));
-      })
-      .catch((err) => {
-        console.log(`${err}`);
-      })
-  }
-
   // получаем сохраненные фильмы сразу переходя во вкладку "сохр.фильмы"
   React.useEffect(() => {
     getFavoriteMovies();
@@ -294,7 +274,36 @@ function App() {
   function getFavoriteMovies() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
-        setFavoriteMovie(data)
+        setArrow(data)
+      })
+      .catch((err) => {
+        console.log(`${err}`);
+      })
+      .finally(()=> {
+        setErrorMessageInSave('')
+      })
+  }
+
+  // Сохранение фильма в избранные
+  function saveFavoriteMovie(movie) {
+    mainApi.addCard(movie)
+      .then((data) => {
+        setArrow([data, ...favoriteMovies])
+        //setFavoriteMovies(arrow)
+        //console.log(data)
+      })
+      .catch((err) => {
+        console.log(`${err}`);
+      })
+    }
+
+  // Удаление фильма из избранных
+  function handleCardDelete(card) {
+    const savedCard = favoriteMovies.find((item) => item.movieId === card.id || item.movieId === card.movieId);
+    mainApi.deleteCard(savedCard._id)
+      .then(() => {
+        setArrow((state) => state.filter((item) => item._id !== card._id));
+        //setFavoriteMovies(arrow)
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -303,12 +312,12 @@ function App() {
 
   // Фильтруем сохраненные фильмы по длительности
   function filteredMyMoviesDur (favoriteMovie) {
-    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= 40);
+    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= 40)
   }
 
    // Выборка фильмов по ключевому слову
-   function filteredMyMoviesVal(favoriteMovie, valueInSave) {
-    const filtered = favoriteMovie.filter((favoriteFilm) => {
+   function filteredMyMoviesVal(arrow, valueInSave) {
+    const filtered = arrow.filter((favoriteFilm) => {
       return (
         favoriteFilm.nameRU.toLowerCase().includes(valueInSave.toLowerCase()) ||
         favoriteFilm.nameEN.toLowerCase().includes(valueInSave.toLowerCase())
@@ -321,23 +330,23 @@ function App() {
   function handleCheckBoxInSave() {
     setCheckBoxInSave(!checkBoxInSave);
     if (!checkBoxInSave) {
-      if (filteredMyMoviesDur(favoriteMovie).length === 0) { //если по ключевому слову ничего нет
-        setFavoriteMovie([]);                                //чистим сохраненные фильмы
+      if (filteredMyMoviesDur(favoriteMovies).length === 0) { //если короткометражек нет
+        setFavoriteMovies([])                               //не показыаем фильмы
         setErrorMessageInSave("Ничего не найдено")           //выводим сообщение
       } else {
-        setFavoriteMovie(filteredMyMoviesDur(favoriteMovie));//иначе показыаем подходящие под запрос фильмы
+        setFavoriteMovies(filteredMyMoviesDur(favoriteMovies));//иначе показыаем короткометражки
         setErrorMessageInSave("");                           //убираем сообщение
       }
     } else {
-      getFavoriteMovies()                                    //при выключении чекбокса показываем сохраненные фильмы и чистим сообщение
+      setFavoriteMovies(arrow)                                    //при выключении чекбокса показываем сохраненные фильмы и чистим сообщение
       setErrorMessageInSave("")
     }
   }
 
-  function handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave) {
-    const myMoviesList = filteredMyMoviesVal(favoriteMovie, valueInSave, checkBoxInSave);
+  function handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave) {
+    const myMoviesList = filteredMyMoviesVal(arrow, valueInSave, checkBoxInSave);
     setMovies(myMoviesList);
-    setFavoriteMovie(checkBoxInSave ? filteredMoviesDur(myMoviesList) : myMoviesList);
+    setFavoriteMovies(checkBoxInSave ? filteredMoviesDur(myMoviesList) : myMoviesList);
     if (myMoviesList.length === 0) {
       setErrorMessageInSave("Ничего не найдено");
     } else {
@@ -345,9 +354,13 @@ function App() {
     }
   }
 
+  React.useEffect(()=> {
+    setFavoriteMovies(arrow)
+  }, [arrow])
+
   function searchSavedMovies(valueInSave) {
     startLoading();
-    handleFilteredMyMovies(favoriteMovie, valueInSave, checkBoxInSave);
+    handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave);
   }
 
   // Управление попапами
@@ -370,12 +383,16 @@ function App() {
         <Routes>
 
           <Route path="/" element={
-            <Main loggedIn={loggedIn} isOpen={isPopupMenu} onClose={closePopup}/>
+            <Main
+              loggedIn={loggedIn}
+              isOpen={isPopupMenu}
+              onClose={closePopup}
+              onClick={handlePopupMenuClick} />
           } />
 
           <Route path="/movies" element={
             <ProtectedRoute element={Movies}
-              favoriteMovie={favoriteMovie}
+              favoriteMovies={favoriteMovies}
               loggedIn={loggedIn}
               isLoading={isLoading}
               onClick={handlePopupMenuClick}
@@ -405,7 +422,7 @@ function App() {
               onFilterMovies={handleCheckBoxInSave}
               checkBox={checkBoxInSave}
               setCheckBox={setCheckBoxInSave}
-              favoriteMovie={favoriteMovie}
+              favoriteMovies={favoriteMovies}
               deleteFavoriteMovie={handleCardDelete}
               getFavoriteMovies={getFavoriteMovies}
               isLoading={isLoading}

@@ -17,7 +17,7 @@ function MoviesCardList({
   movies,
   saveFavoriteMovie,
   deleteFavoriteMovie,
-  favoriteMovie
+  favoriteMovies
 })
 
 {
@@ -61,7 +61,7 @@ function MoviesCardList({
               movie={movie}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={deleteFavoriteMovie}
-              favoriteMovie={favoriteMovie} />
+              favoriteMovies={favoriteMovies} />
           )
         })}
       </ul>

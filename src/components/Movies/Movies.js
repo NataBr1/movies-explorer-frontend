@@ -8,7 +8,7 @@ import './Movies.css';
 import React from "react";
 
 function Movies({
-  favoriteMovie,
+  favoriteMovies,
   isLoading,
   onClick,
   isOpen,
@@ -26,6 +26,7 @@ function Movies({
 })
 
 {
+
   return (
     <div className="movies">
 
@@ -55,7 +56,7 @@ function Movies({
             movies={searchMovies}
             saveFavoriteMovie={saveFavoriteMovie}
             deleteFavoriteMovie={deleteFavoriteMovie}
-            favoriteMovie={favoriteMovie} />
+            favoriteMovies={favoriteMovies} />
         }
 
 
