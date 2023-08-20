@@ -54,7 +54,7 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
               defaultValue={currentUser.email}
               placeholder="Введите свой e-mail"
               autoComplete="off"
-              pattern='^.+@.+..+$'
+              pattern="^\S+@\S+\.\S+$"
               minLength={2}
               maxLength={30}
               onChange={handleChange}

@@ -38,6 +38,7 @@ function MoviesCardList({
   React.useEffect(() => {
     count();
     window.addEventListener("resize", count);
+    window.removeEventListener("resize", count);
   }, []);
 
   function showMore() {
