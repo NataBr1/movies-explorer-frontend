@@ -50,7 +50,7 @@ function Login ({ handleLogin, errorMessage, loggedIn, isLoading }) {
                     disabled={isLoading}
                     required
                   />
-                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.email}</span>
+                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors['email']}</span>
               </label>
               <label className="login__field">
                   <span className="login__span">Пароль</span>
@@ -67,7 +67,7 @@ function Login ({ handleLogin, errorMessage, loggedIn, isLoading }) {
                     disabled={isLoading}
                     required
                   />
-                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors?.password}</span>
+                  <span className={`login__input-error ${!isValid ? "login__input-error_active" : ""}`}>{errors['password']}</span>
               </label>
               <div className="login__box-error"><span className="login__text-error">{errorMessage}</span></div>
               <button className={`login__button ${!isValid ? "login__button_inactive" : ""}`} type="submit" disabled={!isValid || isLoading}>Войти</button>

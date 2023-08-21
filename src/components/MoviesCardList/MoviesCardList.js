@@ -17,7 +17,8 @@ function MoviesCardList({
   movies,
   saveFavoriteMovie,
   deleteFavoriteMovie,
-  favoriteMovies
+  favoriteMovies,
+  searchMovies
 })
 
 {
@@ -35,12 +36,6 @@ function MoviesCardList({
     }
   }
 
-  React.useEffect(() => {
-    count();
-    window.addEventListener("resize", count);
-    window.removeEventListener("resize", count);
-  }, []);
-
   function showMore() {
     const display = window.innerWidth;
     if (display > SCREEN_L) {
@@ -51,6 +46,19 @@ function MoviesCardList({
       setShowMovies(showMovies + PLUS_FOR_MS);
     }
   }
+
+  React.useEffect(() => {
+    count();
+  }, [searchMovies]);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", count);
+    return () => {
+      window.removeEventListener("resize", count);
+    }
+  }, []);
+
+
 
   return (
     <section className="moviesCardList">

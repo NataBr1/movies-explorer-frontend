@@ -10,7 +10,8 @@ function SearchForm({
   checkBox,
   setCheckBox,
   getFavoriteMovies,
-  isLoading
+  isLoading,
+  setSearchMovies
 })
 
 {
@@ -20,13 +21,24 @@ function SearchForm({
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!value) {
-      location.pathname === "/movies" && setError('Нужно ввести ключевое слово')
-      location.pathname === "/saved-movies" && getFavoriteMovies()
+      if (location.pathname === "/movies") {
+        setError('Нужно ввести ключевое слово')
+        localStorage.setItem("request", value);
+        setSearchMovies([])
+        localStorage.setItem("foundMovies", []);
+      } else {
+        getFavoriteMovies()
+      }
     } else {
       setError('');
       onSubmitSearch(value);
     }
   }
+
+  const handleChange = () => {
+    setCheckBox(!checkBox);
+    onFilterMovies()
+  };
 
   return (
     <section className="searchForm">
@@ -42,7 +54,7 @@ function SearchForm({
             onChange={(evt) => setValue(evt.target.value)}
             disabled={isLoading}
           />
-          <button className="searchForm__button" type="submit" />
+          <button className="searchForm__button" type="submit" disabled={isLoading} />
         </div>
 
         <div className="searchForm__textError">{error}</div>
@@ -54,9 +66,9 @@ function SearchForm({
           <input
               className="checkbox"
               type="checkbox"
-              onClick={() => setCheckBox(!checkBox)}
-              onChange={onFilterMovies}
-              defaultChecked={checkBox} />
+              checked={checkBox}
+              onChange={handleChange}
+              disabled={isLoading} />
           <span className="slider" />
         </label>
         <h2 className="switch-name">Короткометражки</h2>

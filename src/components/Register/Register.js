@@ -51,7 +51,7 @@ function Register ({ handleRegister, errorMessage, loggedIn, isLoading }) {
                     disabled={isLoading}
                     required
                   />
-                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.name}</span>
+                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors['name']}</span>
               </label>
               <label className="register__field">
                   <span className="register__span">E-mail</span>
@@ -69,7 +69,7 @@ function Register ({ handleRegister, errorMessage, loggedIn, isLoading }) {
                     disabled={isLoading}
                     required
                   />
-                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.email}</span>
+                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors['email']}</span>
               </label>
               <label className="register__field">
                   <span className="register__span">Пароль</span>
@@ -86,7 +86,7 @@ function Register ({ handleRegister, errorMessage, loggedIn, isLoading }) {
                     disabled={isLoading}
                     required
                   />
-                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors?.password}</span>
+                  <span className={`register__input-error ${!isValid ? "register__input-error_active" : ""}`}>{errors['password']}</span>
               </label>
               <div className="register__box-error"><span className="register__text-error">{errorMessage}</span></div>
               <button className={`register__button ${!isValid ? "register__button_inactive" : ""}`} type="submit" disabled={!isValid || isLoading}>Зарегистрироваться</button>

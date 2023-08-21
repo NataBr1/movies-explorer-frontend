@@ -27,10 +27,10 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [value, setValue] = React.useState(''); //значение поля поиска фильма
-  const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
-  const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
-  const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
+  // const [value, setValue] = React.useState(''); //значение поля поиска фильма
+  // const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
+  // const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
+  // const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [textInfo, setTextInfo] = React.useState('');
 
@@ -149,117 +149,13 @@ function App() {
     setCurrentUser({});
     setMovies([]);
     setFavoriteMovies([]);
-    setSearchMovies([]);
     setErrorMessage('');
     setErrorMessageInSave('')
-    setCheckBox(false);
-    setCheckBoxInSave(false);
-    setValue('');
-    setValueInSave('');
+    setSearchMovies([]);
+    setArrow([]);
     setTextInfo('');
     navigate('/');
   }
-
-  // Выборка фильмов по ключевому слову
-  function filteredMoviesVal(movies, value) {
-    const filtered = movies.filter((movie) => {
-      return (
-        movie.nameRU.toLowerCase().includes(value.toLowerCase()) ||
-        movie.nameEN.toLowerCase().includes(value.toLowerCase())
-      )
-    })
-    return filtered;
-  }
-
-  // Выборка фильмов по чекбоксу
-  function filteredMoviesDur(movies) {
-    return movies.filter((movie) => movie.duration <= SHORT_FILM);
-  }
-
-  function handleFilteredMovies(allMovies, value, checkBox) {
-    const moviesList = filteredMoviesVal(allMovies, value, checkBox);
-    setMovies(moviesList);
-    setSearchMovies(checkBox ? filteredMoviesDur(moviesList) : moviesList);
-    localStorage.setItem("foundMovies", JSON.stringify(moviesList));
-    if (moviesList.length === 0) {
-      setErrorMessage("Ничего не найдено");
-    } else {
-      setErrorMessage("");
-    }
-  }
-
-  // Функция отображения фильмов при переключении чекбокса
-  function handleCheckBox() {
-    setCheckBox(!checkBox);
-    if (!checkBox) {
-      if (filteredMoviesDur(movies).length === 0) {
-        setSearchMovies(filteredMoviesDur(movies));
-        setErrorMessage("Ничего не найдено")
-      } else {
-        setSearchMovies(filteredMoviesDur(movies));
-
-      }
-    } else {
-      setSearchMovies(movies);
-      setErrorMessage("")
-    }
-    localStorage.setItem("switchStatus", !checkBox);
-  }
-
-  // Обработчик сабмита поиска фильмов
-  function submitSearch(value) {
-    setErrorMessage("");
-    localStorage.setItem("request", value); //сохраняем текст запроса
-    localStorage.setItem("switchStatus", checkBox); // сохраняем статус чекбокса
-    if (localStorage.getItem("allMovies")) { // если уже есть список всех фильмов, возьмем оттуда
-      const allMovies = JSON.parse(localStorage.getItem("allMovies"));
-      handleFilteredMovies(allMovies, value, checkBox);
-    } else { // или включаем прелоадер и тянем все фильмы с апи и сохраняем в localStorage
-      setIsLoading(true);
-      moviesApi.getMoviesList()
-        .then((allMovies)=> {
-          handleFilteredMovies(allMovies, value, checkBox);
-          localStorage.setItem("allMovies", JSON.stringify(allMovies));
-        })
-        .catch((err) => {
-          setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
-          console.log(`${err}`);
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
-    }
-  }
-
-  // Получение фильмов из localStorage
-  React.useEffect(() => {
-    if (localStorage.getItem("foundMovies")) {
-      const movies = JSON.parse(localStorage.getItem("foundMovies"));
-      setMovies(movies);
-      if (localStorage.getItem("switchStatus") === "true") {
-        setSearchMovies(filteredMoviesDur(movies));
-      } else {
-        setSearchMovies(movies);
-      }
-    }
-  }, []);
-
-  // Получение короткомеражек из localStorage
-  React.useEffect(() => {
-    if (localStorage.getItem("switchStatus") === "true") {
-      setCheckBox(true);
-    } else {
-      setCheckBox(false);
-    }
-  }, []);
-
-  // Достаем из localStorage значение инпута поиска фильма
-  React.useEffect(() => {
-    if (localStorage.getItem("request")) {
-      const dataValue = JSON.stringify(localStorage.getItem("request"));
-      setValue(dataValue.replace(/\"/g, ""));
-    }
-  }, []);
 
   // получаем сохраненные фильмы сразу переходя во вкладку "сохр.фильмы"
   React.useEffect(() => {
@@ -303,63 +199,10 @@ function App() {
       })
   }
 
-  // Фильтруем сохраненные фильмы по длительности
-  function filteredMyMoviesDur (favoriteMovie) {
-    return favoriteMovie.filter((favoriteMovie) => favoriteMovie.duration <= SHORT_FILM)
-  }
-
-   // Выборка фильмов по ключевому слову
-   function filteredMyMoviesVal(arrow, valueInSave) {
-    const filtered = arrow.filter((favoriteFilm) => {
-      return (
-        favoriteFilm.nameRU.toLowerCase().includes(valueInSave.toLowerCase()) ||
-        favoriteFilm.nameEN.toLowerCase().includes(valueInSave.toLowerCase())
-      )
-    })
-    return filtered;
-  }
-
-  // Отображаем короткометражки, если есть, а если нет - сообщение
-  function handleCheckBoxInSave() {
-    setCheckBoxInSave(!checkBoxInSave);
-    if (!checkBoxInSave) {
-      if (filteredMyMoviesDur(favoriteMovies).length === 0) { //если короткометражек нет
-        setFavoriteMovies([])                               //не показыаем фильмы
-        setErrorMessageInSave("Ничего не найдено")           //выводим сообщение
-      } else {
-        setFavoriteMovies(filteredMyMoviesDur(favoriteMovies));//иначе показыаем короткометражки
-        setErrorMessageInSave("");                           //убираем сообщение
-      }
-    } else {
-      setFavoriteMovies(arrow)                                    //при выключении чекбокса показываем сохраненные фильмы и чистим сообщение
-      setErrorMessageInSave("")
-    }
-  }
-
-  function handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave) {
-    const myMoviesList = filteredMyMoviesVal(arrow, valueInSave, checkBoxInSave);
-    setMovies(myMoviesList);
-    setFavoriteMovies(checkBoxInSave ? filteredMoviesDur(myMoviesList) : myMoviesList);
-    if (myMoviesList.length === 0) {
-      setErrorMessageInSave("Ничего не найдено");
-    } else {
-      setErrorMessageInSave("");
-    }
-  }
-
   React.useEffect(()=> {
-    setValueInSave('')
     setFavoriteMovies(arrow)
-    setErrorMessageInSave('')
-  }, [location, arrow])
+  }, [arrow, location])
 
-  // React.useEffect(()=> {
-  //   setFavoriteMovies(arrow)
-  // }, [arrow])
-
-  function searchSavedMovies(valueInSave) {
-    handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave);
-  }
 
   // Управление попапами
   function handlePopupMenuClick() {
@@ -390,22 +233,21 @@ function App() {
 
           <Route path="/movies" element={
             <ProtectedRoute element={Movies}
+              movies={movies}
               favoriteMovies={favoriteMovies}
+              searchMovies={searchMovies}
+              setSearchMovies={setSearchMovies}
               loggedIn={loggedIn}
               isLoading={isLoading}
+              setIsLoading={setIsLoading}
               onClick={handlePopupMenuClick}
               isOpen={isPopupMenu}
               onClose={closePopup}
-              value={value}
-              setValue={setValue}
-              onSubmitSearch={submitSearch}
-              onFilterMovies={handleCheckBox}
-              checkBox={checkBox}
-              setCheckBox={setCheckBox}
-              searchMovies={searchMovies}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={handleCardDelete}
-              errorMessage={errorMessage} />
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+              setMovies={setMovies} />
           } />
 
           <Route path="/saved-movies" element={
@@ -414,18 +256,14 @@ function App() {
               onClick={handlePopupMenuClick}
               isOpen={isPopupMenu}
               onClose={closePopup}
-              value={valueInSave}
-              setValue={setValueInSave}
-              onSubmitSearch={searchSavedMovies}
-              onFilterMovies={handleCheckBoxInSave}
-              checkBox={checkBoxInSave}
-              setCheckBox={setCheckBoxInSave}
               favoriteMovies={favoriteMovies}
+              setFavoriteMovies={setFavoriteMovies}
               deleteFavoriteMovie={handleCardDelete}
               getFavoriteMovies={getFavoriteMovies}
               isLoading={isLoading}
               errorMessage={errorMessageInSave}
-              valueInSave={valueInSave}/>
+              setErrorMessageInSave={setErrorMessageInSave}
+              arrow={arrow}/>
           } />
 
           <Route path="/profile" element={
