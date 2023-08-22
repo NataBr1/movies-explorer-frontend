@@ -26,6 +26,7 @@ function SavedMovies ({
 {
   const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
+  //const [filtredMovies, setFiltredMovies] = React.useState(false);
 
   // Фильтруем сохраненные фильмы по длительности
   function filteredMyMoviesDur (favoriteMovie) {
@@ -43,31 +44,38 @@ function SavedMovies ({
     return filtered;
   }
 
-  // Отображаем короткометражки, если есть, а если нет - сообщение
-  function handleCheckBoxInSave() {
-    setCheckBoxInSave(!checkBoxInSave);
-    if (!checkBoxInSave && !valueInSave) {
-      if (filteredMyMoviesDur(favoriteMovies).length === 0) { //если короткометражек нет
-        setFavoriteMovies([])                               //не показыаем фильмы
-        setErrorMessageInSave("Ничего не найдено")           //выводим сообщение
-      } else {
-        setFavoriteMovies(filteredMyMoviesDur(favoriteMovies));//иначе показыаем короткометражки
-        setErrorMessageInSave("");                           //убираем сообщение
-      }
-    } else {
-      setFavoriteMovies(arrow)                                    //при выключении чекбокса показываем сохраненные фильмы и чистим сообщение
-      setErrorMessageInSave("")
-    }
-  }
-
   function handleFilteredMyMovies(arrow, valueInSave, checkBoxInSave) {
     const myMoviesList = filteredMyMoviesVal(arrow, valueInSave, checkBoxInSave);
-    //setMovies(myMoviesList);
+    //setFiltredMovies(myMoviesList);
     setFavoriteMovies(checkBoxInSave ? filteredMyMoviesDur(myMoviesList) : myMoviesList);
     if (myMoviesList.length === 0) {
       setErrorMessageInSave("Ничего не найдено");
     } else {
       setErrorMessageInSave("");
+    }
+  }
+
+  // Отображаем короткометражки, если есть, а если нет - сообщение
+  function handleCheckBoxInSave() {
+    setCheckBoxInSave(!checkBoxInSave);
+    if (!checkBoxInSave) {
+      if (filteredMyMoviesDur(favoriteMovies).length === 0) {
+        setFavoriteMovies([])
+        setErrorMessageInSave("Ничего не найдено")
+      } else {
+        setFavoriteMovies(filteredMyMoviesDur(favoriteMovies));
+        setErrorMessageInSave("");
+      }
+    } else if (checkBoxInSave && valueInSave) {
+      if (favoriteMovies.length === 0) {
+        setErrorMessageInSave("Ничего не найдено")
+      } else {
+        setFavoriteMovies(filteredMyMoviesVal(arrow, valueInSave))
+        setErrorMessageInSave("")
+      }
+    } else {
+      setFavoriteMovies(arrow)
+      setErrorMessageInSave("")
     }
   }
 

@@ -75,6 +75,7 @@ function Movies({
           localStorage.setItem("mesNotFound", "false");
         }
       } else if (!value && checkBox) {
+          localStorage.setItem("request", value);
           setSearchMovies([]);
           localStorage.setItem("foundMovies", []);
           setErrorMessage("Ничего не найдено");
@@ -85,9 +86,13 @@ function Movies({
           setErrorMessage("Ничего не найдено");
           localStorage.setItem("mesNotFound", "true");
       } else {
-        setSearchMovies(movies);
-        setErrorMessage("")
-        localStorage.setItem("mesNotFound", "false");
+        if (searchMovies.length === 0) {
+          setErrorMessage("Ничего не найдено")
+        } else {
+          setSearchMovies(movies);
+          setErrorMessage("")
+          localStorage.setItem("mesNotFound", "false");
+        }
       }
       localStorage.setItem("switchStatus", !checkBox);
     }

@@ -263,7 +263,7 @@ function App() {
               isLoading={isLoading}
               errorMessage={errorMessageInSave}
               setErrorMessageInSave={setErrorMessageInSave}
-              arrow={arrow}/>
+              arrow={arrow} />
           } />
 
           <Route path="/profile" element={
