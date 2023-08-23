@@ -6,11 +6,10 @@ import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css';
 import React from "react";
-import { SHORT_FILM } from "../../utils/constants"
 import moviesApi from '../../utils/MoviesApi';
+import { filteredMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
 
 function Movies({
-  movies,
   favoriteMovies,
   isLoading,
   onClick,
@@ -20,18 +19,107 @@ function Movies({
   deleteFavoriteMovie,
   errorMessage,
   setErrorMessage,
-  setMovies,
   setIsLoading,
   searchMovies,
-  setSearchMovies
+  setSearchMovies,
+  shortMovies,
+  setAllMovies
 })
 
 {
-  //const location = useLocation();
-  const [value, setValue] = React.useState(''); //значение поля поиска фильма
-  const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
+  const [value, setValue] = React.useState('');
+  const [checkBox, setCheckBox] = React.useState(false);
+  const [rawMovies, setRawMovies] = React.useState(JSON.parse(localStorage.getItem('allMovies')));
 
+  function handleFilterMovies(movies, userQuery, checkbox) {
+      const moviesList = filterMoviesVal(movies, userQuery, checkbox)
+      if (moviesList.length === 0) {
+          setErrorMessage("Ничего не найдено")
+      } else {
+          setErrorMessage("")
+      }
+      setRawMovies(moviesList);
+      setSearchMovies(checkbox ? filteredMoviesDur(moviesList) : moviesList);
+      localStorage.setItem('findedMovies', JSON.stringify(moviesList))
+      localStorage.setItem('findedShortMovies', JSON.stringify(filteredMoviesDur(moviesList)))
+  }
 
+  function handleSubmitSearch(value) {
+      setValue(value);
+      localStorage.setItem('request', value);
+      localStorage.setItem('checkBoxStatus', checkBox);
+      if (localStorage.getItem('allMovies')) {
+          const allMoviesList = JSON.parse(localStorage.getItem('allMovies'))
+          handleFilterMovies(allMoviesList, value, checkBox)
+      } else {
+          setIsLoading(true)
+          moviesApi.getMoviesList()
+              .then((allMovies) => {
+                  setAllMovies(allMovies)
+                  localStorage.setItem('allMovies', JSON.stringify(allMovies))
+                  handleFilterMovies(allMovies, value, checkBox)
+              })
+              .catch((err) => {
+                setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+                console.log(`${err}`);
+              })
+              .finally(() => {
+                setIsLoading(false);
+              })
+      }
+  }
+
+  function handleShortMovies() {
+    setCheckBox(!checkBox)
+      if (!checkBox) {
+          setSearchMovies(filteredMoviesDur(rawMovies))
+      } else {
+          setSearchMovies(rawMovies)
+      }
+      localStorage.setItem('checkBoxStatus', !checkBox);
+  }
+
+  React.useEffect(() => {
+      if (localStorage.getItem('findedMovies')) {
+          const movies = JSON.parse(localStorage.getItem('findedMovies'))
+          setRawMovies(movies)
+          if (localStorage.getItem('checkBoxStatus') === true) {
+              setSearchMovies(filteredMoviesDur(movies))
+          } else {
+              setSearchMovies(movies)
+          }
+      }
+
+  }, [])
+
+  React.useEffect(() => {
+      if ((localStorage.getItem('checkBoxStatus') === true) && (localStorage.getItem('findedShortMovies'))) {
+        setErrorMessage("Ничего не найдено")
+      } else if ((localStorage.getItem('checkBoxStatus') === false) && (localStorage.getItem('findedMovies'))) {
+        setErrorMessage("Ничего не найдено")
+      } else {
+        setErrorMessage("")
+      }
+  }, [])
+
+  React.useEffect(() => {
+      if (localStorage.getItem('checkBoxStatus') === 'true') {
+          setCheckBox(true)
+          if (localStorage.getItem('findedShortMovies')) {
+              const shortMovies = JSON.parse(localStorage.getItem('findedShortMovies'))
+              setSearchMovies(shortMovies)
+          }
+      } else {
+          setCheckBox(false)
+      }
+  }, [])
+
+  React.useEffect(() => {
+    if (localStorage.getItem("request")) {
+      const dataValue = JSON.stringify(localStorage.getItem("request"));
+      setValue(dataValue.replace(/\"/g, ""));
+    }
+  }, []);
 
 
   return (
@@ -46,12 +134,14 @@ function Movies({
         <SearchForm
           value={value}
           setValue={setValue}
-          // onSubmitSearch={onSubmitSearch}
-          // onFilterMovies={handleCheckBox}
+          onSubmitSearch={handleSubmitSearch}
+          onFilterMovies={handleShortMovies}
           checkBox={checkBox}
           setCheckBox={setCheckBox}
           isLoading={isLoading}
-          setSearchMovies={setSearchMovies}/>
+          setRawMovies={setRawMovies}
+          setSearchMovies={setSearchMovies}
+          isShortMovies={shortMovies}/>
 
         {isLoading ? <Preloader /> : ""}
         {isLoading ? "" :
@@ -65,7 +155,8 @@ function Movies({
             saveFavoriteMovie={saveFavoriteMovie}
             deleteFavoriteMovie={deleteFavoriteMovie}
             favoriteMovies={favoriteMovies}
-            searchMovies={searchMovies} />
+            searchMovies={searchMovies}
+            isSavedMoviesPage={false} />
         }
 
 

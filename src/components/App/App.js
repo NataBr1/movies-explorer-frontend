@@ -9,11 +9,9 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Error from '../Error/Error';
-import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
-import { SHORT_FILM } from "../../utils/constants"
 
 function App() {
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -21,16 +19,13 @@ function App() {
   const [isPopupMenu, setIsPopupMenu] = React.useState(false);
   const [isPopupEditProfile, setIsPopupEditProfile] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
-  const [arrow, setArrow] = React.useState([]);
-  const [favoriteMovies, setFavoriteMovies] = React.useState(arrow);
+  const [allMovies, setAllMovies] = React.useState([]);
+  const [favoriteMovies, setFavoriteMovies] = React.useState([]);
+  const [rawFaforiteMovies, setRawFaforiteMovies] = React.useState([favoriteMovies]);
   const [searchMovies, setSearchMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  // const [value, setValue] = React.useState(''); //значение поля поиска фильма
-  // const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
-  // const [checkBox, setCheckBox] = React.useState(false); //Значение переключателя
-  // const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [textInfo, setTextInfo] = React.useState('');
 
@@ -150,9 +145,9 @@ function App() {
     setMovies([]);
     setFavoriteMovies([]);
     setErrorMessage('');
-    setErrorMessageInSave('')
-    setSearchMovies([]);
-    setArrow([]);
+    //setErrorMessageInSave('')
+    //setSearchMovies([]);
+    setAllMovies([]);
     setTextInfo('');
     navigate('/');
   }
@@ -166,13 +161,10 @@ function App() {
   function getFavoriteMovies() {
     mainApi.getFavoriteMovies()
       .then((data)=> {
-        setArrow(data)
+        setFavoriteMovies(data)
       })
       .catch((err) => {
         console.log(`${err}`);
-      })
-      .finally(()=> {
-        setErrorMessageInSave('')
       })
   }
 
@@ -180,7 +172,7 @@ function App() {
   function saveFavoriteMovie(movie) {
     mainApi.addCard(movie)
       .then((data) => {
-        setArrow([data, ...favoriteMovies])
+        setFavoriteMovies([data, ...favoriteMovies])
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -192,16 +184,12 @@ function App() {
     const savedCard = favoriteMovies.find((item) => item.movieId === card.id || item.movieId === card.movieId);
     mainApi.deleteCard(savedCard._id)
       .then(() => {
-        setArrow((state) => state.filter((item) => item._id !== card._id));
+        setFavoriteMovies((state) => state.filter((item) => item._id !== card._id));
       })
       .catch((err) => {
         console.log(`${err}`);
       })
   }
-
-  React.useEffect(()=> {
-    setFavoriteMovies(arrow)
-  }, [arrow, location])
 
 
   // Управление попапами
@@ -234,10 +222,8 @@ function App() {
           <Route path="/movies" element={
             <ProtectedRoute element={Movies}
               movies={movies}
+              setMovies={setMovies}
               favoriteMovies={favoriteMovies}
-              searchMovies={searchMovies}
-              setSearchMovies={setSearchMovies}
-              loggedIn={loggedIn}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
               onClick={handlePopupMenuClick}
@@ -247,7 +233,12 @@ function App() {
               deleteFavoriteMovie={handleCardDelete}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
-              setMovies={setMovies} />
+              searchMovies={searchMovies}
+              setSearchMovies={setSearchMovies}
+              loggedIn={loggedIn}
+              allMovies={allMovies}
+              setAllMovies={setAllMovies}
+              />
           } />
 
           <Route path="/saved-movies" element={
@@ -261,9 +252,10 @@ function App() {
               deleteFavoriteMovie={handleCardDelete}
               getFavoriteMovies={getFavoriteMovies}
               isLoading={isLoading}
-              errorMessage={errorMessageInSave}
-              setErrorMessageInSave={setErrorMessageInSave}
-              arrow={arrow} />
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+              rawFaforiteMovies={rawFaforiteMovies}
+              setRawFaforiteMovies={setRawFaforiteMovies}/>
           } />
 
           <Route path="/profile" element={

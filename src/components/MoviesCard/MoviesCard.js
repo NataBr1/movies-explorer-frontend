@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { apiMovieImg } from "../../utils/constants";
 
-function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovies, isLoading }) {
+function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovies, isSavedMoviesPage }) {
   const location = useLocation();
   const currentUser = React.useContext(CurrentUserContext);
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
@@ -61,7 +61,7 @@ function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMov
             // movie.image.url === undefined
             //   ? movie.image
             //   :
-              location.pathname === '/saved-movies' ? movie.image : `${apiMovieImg}${movie.image.url}`
+              isSavedMoviesPage ? movie.image : `${apiMovieImg}${movie.image.url}`
             }
           alt={movie.nameRU} />
       </a>

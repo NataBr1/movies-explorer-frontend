@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer";
 import Preloader from "../Preloader/Preloader";
 import './SavedMovies.css';
 import React from "react";
-import { SHORT_FILM } from "../../utils/constants"
+import { filteredMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
 
 
 function SavedMovies ({
@@ -16,16 +16,19 @@ function SavedMovies ({
   deleteFavoriteMovie,
   getFavoriteMovies,
   errorMessage,
+  setErrorMessage,
   isLoading,
   favoriteMovies,
   setFavoriteMovies,
-  setErrorMessageInSave,
-  arrow
+  isSavedMoviesPage,
+  rawFaforiteMovies,
+  setRawFaforiteMovies
 })
 
 {
   const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
+
 
 
   return (
@@ -40,12 +43,13 @@ function SavedMovies ({
         <SearchForm
           value={valueInSave}
           setValue={setValueInSave}
-          // onSubmitSearch={onSubmitSearchInSave}
-          // onFilterMovies={handleCheckBoxInSave}
+          // onSubmitSearch={handleSubmitSearch}
+          // onFilterMovies={handleShortMovies}
           checkBox={checkBoxInSave}
           setCheckBox={setCheckBoxInSave}
           getFavoriteMovies={getFavoriteMovies}
-          isLoading={isLoading} />
+          isLoading={isLoading}
+          favoriteMovies={favoriteMovies} />
 
         {isLoading ? <Preloader /> : ""}
         {isLoading ? "" :
@@ -56,7 +60,8 @@ function SavedMovies ({
           <MoviesCardList
             movies={favoriteMovies}
             deleteFavoriteMovie={deleteFavoriteMovie}
-            favoriteMovies={favoriteMovies} />
+            favoriteMovies={favoriteMovies}
+            isSavedMoviesPage={true} />
         }
 
         <div className="savedMovies__box" />

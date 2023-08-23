@@ -11,27 +11,33 @@ function SearchForm({
   setCheckBox,
   getFavoriteMovies,
   isLoading,
-  setSearchMovies
+  setRawMovies,
+  setSearchMovies,
+  setIsShowMoviesFavorites,
+  favoriteMovies
 })
 
 {
   const location = useLocation();
-  const [error, setError] = React.useState('');
+  const [error, setError] = React.useState('')
 
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!value) {
       if (location.pathname === "/movies") {
-        setError('Нужно ввести ключевое слово')
-        localStorage.setItem("request", value);
-        setSearchMovies([])
-        localStorage.setItem("foundMovies", []);
-      } else {
-        getFavoriteMovies()
+        setError("Нужно ввести ключевое слово")
+        // setSearchMovies([])
+        // setRawMovies([])
+        // localStorage.setItem("findedMovies", [])
+        // localStorage.setItem("findedShortMovies", [])
+        return
       }
+      // else {
+      //   getFavoriteMovies()
+      // }
     } else {
-      setError('');
       onSubmitSearch(value);
+      setError("")
     }
   }
 
