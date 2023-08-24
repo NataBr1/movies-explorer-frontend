@@ -20,19 +20,21 @@ function Movies({
   errorMessage,
   setErrorMessage,
   setIsLoading,
-  searchMovies,
-  setSearchMovies,
+  // searchMovies,
+  // setSearchMovies,
   shortMovies,
   setAllMovies
 })
 
 {
+  const [error, setError] = React.useState('')
   const [value, setValue] = React.useState('');
   const [checkBox, setCheckBox] = React.useState(false);
   const [rawMovies, setRawMovies] = React.useState(JSON.parse(localStorage.getItem('allMovies')));
+  const [searchMovies, setSearchMovies] = React.useState([]);
 
-  function handleFilterMovies(movies, userQuery, checkbox) {
-      const moviesList = filterMoviesVal(movies, userQuery, checkbox)
+  function handleFilterMovies(movies, value, checkbox) {
+      const moviesList = filterMoviesVal(movies, value, checkbox)
       if (moviesList.length === 0) {
           setErrorMessage("Ничего не найдено")
       } else {
@@ -139,9 +141,11 @@ function Movies({
           checkBox={checkBox}
           setCheckBox={setCheckBox}
           isLoading={isLoading}
-          setRawMovies={setRawMovies}
           setSearchMovies={setSearchMovies}
-          isShortMovies={shortMovies}/>
+          isShortMovies={shortMovies}
+          error={error}
+          setError={setError}
+          setErrorMessage={setErrorMessage}/>
 
         {isLoading ? <Preloader /> : ""}
         {isLoading ? "" :
@@ -149,7 +153,7 @@ function Movies({
         }
 
 
-        {isLoading ? "" :
+        {isLoading || errorMessage || error ? "" :
           <MoviesCardList
             movies={searchMovies}
             saveFavoriteMovie={saveFavoriteMovie}

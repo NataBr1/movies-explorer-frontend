@@ -11,33 +11,34 @@ function SearchForm({
   setCheckBox,
   getFavoriteMovies,
   isLoading,
-  setRawMovies,
-  setSearchMovies,
-  setIsShowMoviesFavorites,
-  favoriteMovies
+  setRawFavoriteMovies,
+  favoriteMovies,
+  error,
+  setError,
+  setErrorMessage
 })
 
 {
   const location = useLocation();
-  const [error, setError] = React.useState('')
+  // const [error, setError] = React.useState('')
 
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!value) {
       if (location.pathname === "/movies") {
         setError("Нужно ввести ключевое слово")
-        // setSearchMovies([])
-        // setRawMovies([])
-        // localStorage.setItem("findedMovies", [])
-        // localStorage.setItem("findedShortMovies", [])
+        setErrorMessage('')
+        localStorage.setItem("request", '')
+        localStorage.setItem("findedMovies", [])
+        localStorage.setItem("findedShortMovies", [])
         return
       }
-      // else {
-      //   getFavoriteMovies()
-      // }
+      else {
+        getFavoriteMovies()
+      }
     } else {
       onSubmitSearch(value);
-      setError("")
+      location.pathname === "/movies" && setError("")
     }
   }
 
@@ -45,6 +46,12 @@ function SearchForm({
     setCheckBox(!checkBox);
     onFilterMovies()
   };
+
+  React.useEffect(() => {
+    if (location.pathname === "/saved-movies") {
+      setRawFavoriteMovies(favoriteMovies)
+    }
+  }, [favoriteMovies, location.pathname, setRawFavoriteMovies, value])
 
   return (
     <section className="searchForm">

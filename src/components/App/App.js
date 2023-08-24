@@ -21,8 +21,8 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
   const [favoriteMovies, setFavoriteMovies] = React.useState([]);
-  const [rawFaforiteMovies, setRawFaforiteMovies] = React.useState([favoriteMovies]);
-  const [searchMovies, setSearchMovies] = React.useState([]);
+  // const [rawFaforiteMovies, setRawFaforiteMovies] = React.useState([favoriteMovies]);
+  //const [searchMovies, setSearchMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -184,7 +184,14 @@ function App() {
     const savedCard = favoriteMovies.find((item) => item.movieId === card.id || item.movieId === card.movieId);
     mainApi.deleteCard(savedCard._id)
       .then(() => {
-        setFavoriteMovies((state) => state.filter((item) => item._id !== card._id));
+        const newFavoriteMovies = favoriteMovies.filter((item) => {
+          if (card.id === item.movieId || card.movieId === item.movieId) {
+            return false
+          } else {
+            return true
+          }
+        })
+        setFavoriteMovies(newFavoriteMovies);
       })
       .catch((err) => {
         console.log(`${err}`);
@@ -233,8 +240,8 @@ function App() {
               deleteFavoriteMovie={handleCardDelete}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
-              searchMovies={searchMovies}
-              setSearchMovies={setSearchMovies}
+              // searchMovies={searchMovies}
+              // setSearchMovies={setSearchMovies}
               loggedIn={loggedIn}
               allMovies={allMovies}
               setAllMovies={setAllMovies}
@@ -251,11 +258,11 @@ function App() {
               setFavoriteMovies={setFavoriteMovies}
               deleteFavoriteMovie={handleCardDelete}
               getFavoriteMovies={getFavoriteMovies}
-              isLoading={isLoading}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-              rawFaforiteMovies={rawFaforiteMovies}
-              setRawFaforiteMovies={setRawFaforiteMovies}/>
+              errorMessage={errorMessageInSave}
+              setErrorMessage={setErrorMessageInSave}
+              // rawFaforiteMovies={rawFaforiteMovies}
+              // setRawFaforiteMovies={setRawFaforiteMovies}
+              />
           } />
 
           <Route path="/profile" element={

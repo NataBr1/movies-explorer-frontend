@@ -71,8 +71,8 @@ function MoviesCardList({
               movie={movie}
               saveFavoriteMovie={saveFavoriteMovie}
               deleteFavoriteMovie={deleteFavoriteMovie}
-              favoriteMovies={favoriteMovies}
-              isSavedMoviesPage={isSavedMoviesPage} />
+              isSavedMoviesPage={isSavedMoviesPage}
+              favoriteMovies={favoriteMovies} />
           )
         })}
       </ul>
