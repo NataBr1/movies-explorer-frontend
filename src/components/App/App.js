@@ -51,21 +51,27 @@ function App() {
     setTimeout(() => setIsInfoTooltipOpen(false), 1200);
   }
 
+  function startInfoTooltipError() {
+    setIsInfoTooltipOpen(true);
+  }
+
   // Регистрация пользователя
   function handleRegister ({ name, email, password }) {
     setErrorMessage('')
     mainApi.register({ name, email, password })
       .then(() => {
         handleLogin ({ email, password })
-        startInfoTooltip();
+        startInfoTooltipError();
         setTextInfo("Вы успешно зарегистрировались!")
       })
       .catch((err) => {
         console.log(`${err}`);
         if (err.includes(409)) {
-          setErrorMessage("Пользователь с таким email уже зарегистрирован.")
+          startInfoTooltipError();
+          setTextInfo("Пользователь с таким email уже зарегистрирован.")
         } else {
-          setErrorMessage("Что-то пошло не так! Попробуйте еще раз.");
+          startInfoTooltipError();
+          setTextInfo("Что-то пошло не так! Попробуйте еще раз.")
         }
       })
   }
@@ -85,9 +91,11 @@ function App() {
       .catch((err) => {
         console.log(`${err}`);
         if (err.includes(401)) {
-          setErrorMessage("Неверный email или пароль! Попробуйте еще раз.")
+          startInfoTooltipError();
+          setTextInfo("Неверный email или пароль! Попробуйте еще раз.")
         } else {
-          setErrorMessage("Что-то пошло не так! Попробуйте еще раз.");
+          startInfoTooltipError();
+          setTextInfo("Что-то пошло не так! Попробуйте еще раз.")
         }
       })
       .finally(()=> {
@@ -108,9 +116,11 @@ function App() {
       .catch((err) => {
         console.log(`${err}`);
         if (err.includes(409)) {
-          setErrorMessage("Пользователь с таким email уже зарегистрирован.")
+          startInfoTooltipError();
+          setTextInfo("Пользователь с таким email уже зарегистрирован.")
         } else {
-          setErrorMessage("Что-то пошло не так! Попробуйте еще раз");
+          startInfoTooltipError();
+          setTextInfo("Что-то пошло не так! Попробуйте еще раз.")
         }
       })
   }

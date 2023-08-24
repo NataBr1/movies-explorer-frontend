@@ -80,5 +80,3 @@ function Login ({ handleLogin, errorMessage, loggedIn, isLoading }) {
 
 export default Login;
 
-
-// {`login__button ${isValid ? "_disactive" : ""}`} type="submit" disabled={!isValid}
