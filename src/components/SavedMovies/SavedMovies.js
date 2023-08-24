@@ -3,11 +3,9 @@ import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-import Preloader from "../Preloader/Preloader";
 import './SavedMovies.css';
 import React from "react";
-import { filteredMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
-import { useLocation } from 'react-router-dom';
+import { filterMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
 
 
 function SavedMovies ({
@@ -18,62 +16,35 @@ function SavedMovies ({
   getFavoriteMovies,
   errorMessage,
   setErrorMessage,
-  favoriteMovies,
-  setFavoriteMovies,
-  isSavedMoviesPage,
-  rawFaforiteMovies,
-  setRawFaforiteMovies
+  favoriteMovies
 })
 
 {
-  const location = useLocation();
   const [valueInSave, setValueInSave] = React.useState(''); //значение поля поиска фильма на странице сохраненных фильмов
   const [checkBoxInSave, setCheckBoxInSave] = React.useState(false); //Значение переключателя на странице сохраненных фильмах
-  const [rawFavoriteMovies, setRawFavoriteMovies] = React.useState(favoriteMovies);
-  const [searchFavoriteMovies, setSearchFavoriteMovies] = React.useState([]);
+  const [filteredMovies, setFilteredMovies] = React.useState(favoriteMovies);
 
 
   function handleSubmitSearch(valueInSave) {
-      const filterMoviesList = filterMoviesVal(rawFavoriteMovies, valueInSave, checkBoxInSave)
-      if (filterMoviesList.length === 0) {
-          setErrorMessage("Ничего не найдено")
-          setSearchFavoriteMovies([])
-      } else {
-          setSearchFavoriteMovies(filterMoviesList)
-          setErrorMessage("")
-      }
-      setRawFavoriteMovies(filterMoviesList)
+    setValueInSave(valueInSave);
   }
 
   function handleShortMovies() {
-      if (!checkBoxInSave) {
-          setCheckBoxInSave(true)
-          setSearchFavoriteMovies(filteredMoviesDur(favoriteMovies))
-          // if (filteredMoviesDur(searchFavoriteMovies).length === 0) {
-          //   setErrorMessage("Ничего не найдено")
-          //   setSearchFavoriteMovies([])
-          // } else {
-          //   setErrorMessage("")
-          // }
-      } else {
-          setCheckBoxInSave(false)
-          setSearchFavoriteMovies(favoriteMovies)
-          // if (searchFavoriteMovies.length === 0) {
-          //   setErrorMessage("Ничего не найдено")
-          // } else {
-          //   setErrorMessage("")
-          // }
-      }
+    setCheckBoxInSave(!checkBoxInSave);
   }
 
   React.useEffect(() => {
-      setSearchFavoriteMovies(favoriteMovies)
-      if (favoriteMovies.length === 0) {
-        setErrorMessage("Ничего не найдено")
-      } else {
-        setErrorMessage("")
-      }
-  }, [favoriteMovies, location.pathname])
+    const moviesList = filterMoviesVal(favoriteMovies, valueInSave);
+    setFilteredMovies(checkBoxInSave ? filterMoviesDur(moviesList) : moviesList);
+  }, [favoriteMovies, checkBoxInSave, valueInSave]);
+
+  React.useEffect(() => {
+    if (filteredMovies.length === 0) {
+      setErrorMessage("Ничего не найдено")
+    } else {
+      setErrorMessage("")
+    }
+  }, [filteredMovies]);
 
 
   return (
@@ -93,18 +64,17 @@ function SavedMovies ({
           checkBox={checkBoxInSave}
           setCheckBox={setCheckBoxInSave}
           getFavoriteMovies={getFavoriteMovies}
-          setRawFavoriteMovies={setRawFavoriteMovies}
           favoriteMovies={favoriteMovies} />
 
         {(errorMessage ? (<p className="search__error">{errorMessage}</p>) : "")}
 
         {errorMessage ? "" :
           <MoviesCardList
-            movies={searchFavoriteMovies}
+            movies={filteredMovies}
             deleteFavoriteMovie={deleteFavoriteMovie}
             favoriteMovies={favoriteMovies}
             isSavedMoviesPage={true}
-            searchMovies={searchFavoriteMovies}
+            searchMovies={filteredMovies}
              />
         }
 

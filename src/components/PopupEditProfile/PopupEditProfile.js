@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormValidation from '../../utils/useFormValidation';
 import usePopupClose from "../../hooks/usePopupClose";
 
-function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
+function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading, errorMessage }) {
   usePopupClose(isOpen, onClose);
 
   const currentUser = React.useContext(CurrentUserContext);
@@ -24,6 +24,7 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
       email: currentUser.email
     })
   }, [isOpen, currentUser, setValues]);
+
 
   return (
     <section className={`popupEditProfile ${isOpen ? `popupEditProfile_opened`: ""}`} >
@@ -67,13 +68,13 @@ function PopupEditProfile({ isOpen, onClose, onUpdateUser, isLoading }) {
           <div className="popupEditProfile__box-error"><span className="popupEditProfile__text-error">{
               (values.name === currentUser.name && values.email === currentUser.email)
                 ? "Необходимо изменить имя или email"
-                : errors?.name || errors?.email }</span></div>
+                : errors?.name || errors?.email || errorMessage }</span></div>
           <button
               className={!isValid || (values.name === currentUser.name && values.email === currentUser.email)
                 ? "popupEditProfile__save popupEditProfile__save_inactive"
                 : "popupEditProfile__save"}
               type="submit"
-              disabled={!isValid || isLoading}
+              disabled={!isValid || isLoading }
               onClick={onClose}
           >Сохранить</button>
         </form>

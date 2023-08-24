@@ -11,8 +11,6 @@ function SearchForm({
   setCheckBox,
   getFavoriteMovies,
   isLoading,
-  setRawFavoriteMovies,
-  favoriteMovies,
   error,
   setError,
   setErrorMessage
@@ -20,7 +18,6 @@ function SearchForm({
 
 {
   const location = useLocation();
-  // const [error, setError] = React.useState('')
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -46,12 +43,6 @@ function SearchForm({
     setCheckBox(!checkBox);
     onFilterMovies()
   };
-
-  React.useEffect(() => {
-    if (location.pathname === "/saved-movies") {
-      setRawFavoriteMovies(favoriteMovies)
-    }
-  }, [favoriteMovies, location.pathname, setRawFavoriteMovies, value])
 
   return (
     <section className="searchForm">

@@ -15,7 +15,9 @@ function Profile ({
   isOpenEditProfile,
   onCloseEditProfile,
   onUpdateUser,
-  signOut
+  signOut,
+  errorMessage,
+  setErrorMessage
 })
 
 {
@@ -36,6 +38,8 @@ function Profile ({
             isLoading={isLoading}
             isOpen={isOpenEditProfile}
             onClose={onCloseEditProfile}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
             onUpdateUser={onUpdateUser} />
 
           {isOpen ? "" :

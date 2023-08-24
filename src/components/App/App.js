@@ -21,8 +21,6 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
   const [favoriteMovies, setFavoriteMovies] = React.useState([]);
-  // const [rawFaforiteMovies, setRawFaforiteMovies] = React.useState([favoriteMovies]);
-  //const [searchMovies, setSearchMovies] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -145,8 +143,7 @@ function App() {
     setMovies([]);
     setFavoriteMovies([]);
     setErrorMessage('');
-    //setErrorMessageInSave('')
-    //setSearchMovies([]);
+    setErrorMessageInSave('')
     setAllMovies([]);
     setTextInfo('');
     navigate('/');
@@ -156,6 +153,10 @@ function App() {
   React.useEffect(() => {
     getFavoriteMovies();
   }, [])
+
+  React.useEffect(() => {
+    setErrorMessage('')
+  }, [location])
 
   // Получение списка сохраненных фильмов
   function getFavoriteMovies() {
@@ -240,8 +241,6 @@ function App() {
               deleteFavoriteMovie={handleCardDelete}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
-              // searchMovies={searchMovies}
-              // setSearchMovies={setSearchMovies}
               loggedIn={loggedIn}
               allMovies={allMovies}
               setAllMovies={setAllMovies}
@@ -260,8 +259,6 @@ function App() {
               getFavoriteMovies={getFavoriteMovies}
               errorMessage={errorMessageInSave}
               setErrorMessage={setErrorMessageInSave}
-              // rawFaforiteMovies={rawFaforiteMovies}
-              // setRawFaforiteMovies={setRawFaforiteMovies}
               />
           } />
 
@@ -275,7 +272,9 @@ function App() {
               onUpdateUser={handleUpdateUser}
               isOpen={isPopupMenu}
               onClick={handlePopupMenuClick}
-              signOut={signOut} />
+              signOut={signOut}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage} />
             }/>
 
           <Route path="/signin" element={

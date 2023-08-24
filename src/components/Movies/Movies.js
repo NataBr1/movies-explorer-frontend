@@ -7,7 +7,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css';
 import React from "react";
 import moviesApi from '../../utils/MoviesApi';
-import { filteredMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
+import { filterMoviesDur, filterMoviesVal } from '../../utils/filtredMovies';
 
 function Movies({
   favoriteMovies,
@@ -20,8 +20,6 @@ function Movies({
   errorMessage,
   setErrorMessage,
   setIsLoading,
-  // searchMovies,
-  // setSearchMovies,
   shortMovies,
   setAllMovies
 })
@@ -41,9 +39,9 @@ function Movies({
           setErrorMessage("")
       }
       setRawMovies(moviesList);
-      setSearchMovies(checkbox ? filteredMoviesDur(moviesList) : moviesList);
+      setSearchMovies(checkbox ? filterMoviesDur(moviesList) : moviesList);
       localStorage.setItem('findedMovies', JSON.stringify(moviesList))
-      localStorage.setItem('findedShortMovies', JSON.stringify(filteredMoviesDur(moviesList)))
+      localStorage.setItem('findedShortMovies', JSON.stringify(filterMoviesDur(moviesList)))
   }
 
   function handleSubmitSearch(value) {
@@ -56,25 +54,25 @@ function Movies({
       } else {
           setIsLoading(true)
           moviesApi.getMoviesList()
-              .then((allMovies) => {
-                  setAllMovies(allMovies)
-                  localStorage.setItem('allMovies', JSON.stringify(allMovies))
-                  handleFilterMovies(allMovies, value, checkBox)
-              })
-              .catch((err) => {
-                setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
-                console.log(`${err}`);
-              })
-              .finally(() => {
-                setIsLoading(false);
-              })
+            .then((allMovies) => {
+                setAllMovies(allMovies)
+                localStorage.setItem('allMovies', JSON.stringify(allMovies))
+                handleFilterMovies(allMovies, value, checkBox)
+            })
+            .catch((err) => {
+              setErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+              console.log(`${err}`);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            })
       }
   }
 
   function handleShortMovies() {
     setCheckBox(!checkBox)
       if (!checkBox) {
-          setSearchMovies(filteredMoviesDur(rawMovies))
+          setSearchMovies(filterMoviesDur(rawMovies))
       } else {
           setSearchMovies(rawMovies)
       }
@@ -86,7 +84,7 @@ function Movies({
           const movies = JSON.parse(localStorage.getItem('findedMovies'))
           setRawMovies(movies)
           if (localStorage.getItem('checkBoxStatus') === true) {
-              setSearchMovies(filteredMoviesDur(movies))
+              setSearchMovies(filterMoviesDur(movies))
           } else {
               setSearchMovies(movies)
           }

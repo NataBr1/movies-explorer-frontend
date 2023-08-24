@@ -1,6 +1,6 @@
 import { SHORT_FILM } from "./constants"
 
-export function filteredMoviesDur(movies) {
+export function filterMoviesDur(movies) {
     return movies.filter((movie) => movie.duration <= SHORT_FILM)
   }
 
