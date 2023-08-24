@@ -40,6 +40,10 @@ function SearchForm({
   }
 
   const handleChange = () => {
+    if (location.pathname === "/movies" && !localStorage.getItem('allMovies')) {
+      setError("Нужно ввести ключевое слово")
+      return
+    }
     setCheckBox(!checkBox);
     onFilterMovies()
   };

@@ -152,7 +152,7 @@ function App() {
   // получаем сохраненные фильмы сразу переходя во вкладку "сохр.фильмы"
   React.useEffect(() => {
     getFavoriteMovies();
-  }, [])
+  }, [loggedIn])
 
   React.useEffect(() => {
     setErrorMessage('')
