@@ -1,14 +1,24 @@
 .popupEditProfile {
   visibility: hidden;
   opacity: 0;
-  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
   top: 0;
   left: 0;
+  background-color: rgba(32, 32, 32, 0);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
 }
 
 .popupEditProfile_opened {
   visibility: visible;
   opacity: 1;
+}
+
+.popupEditProfile__container {
+  margin-top: 302px;
 }
 
 .popupEditProfile__form {
@@ -47,6 +57,10 @@
   width: 100%;
   text-align: right;
   padding: 0;
+}
+
+.popupEditProfile__input_error {
+  color: #EE3465;
 }
 
 .popupEditProfile__input:focus {
@@ -95,6 +109,10 @@
   .popupEditProfile__field:nth-child(2) {
     padding-bottom: 156px;
   }
+
+  .popupEditProfile__container {
+    margin-top: 440px;
+  }
 }
 
 @media (max-width: 592px) {
@@ -114,5 +132,9 @@
 
   .popupEditProfile__save {
     font-size: 11px;
+  }
+
+  .popupEditProfile__container {
+    margin-top: 257px;
   }
 }

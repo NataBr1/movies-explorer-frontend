@@ -4,10 +4,9 @@ import Navigation from '../Navigation/Navigation';
 import { Link } from 'react-router-dom';
 import logo from "../../images/logo.svg"
 
-function Header({ onClick }) {
+function Header({ onClick, classNameHeader }) {
   return (
-
-    <header className="header">
+    <header className={classNameHeader}>
         <Link className="header__logo" to="/">
           <img src={logo} alt="Изображение логотипа" />
         </Link>

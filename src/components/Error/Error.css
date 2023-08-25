@@ -27,6 +27,8 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;
+  border: none;
+  padding: 0;
 }
 
 .error__button:hover {

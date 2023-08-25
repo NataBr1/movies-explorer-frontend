@@ -6,6 +6,10 @@
   padding: 18px 70px 18px;
 }
 
+.header_color {
+  background-color: #073042;
+}
+
 .header__logo:hover {
   cursor: pointer;
   opacity: .7;

@@ -1,28 +1,89 @@
 import './MoviesCard.css'
-import img from '../../images/pic__COLOR_pic.png';
 import React from "react";
 import { useLocation } from 'react-router-dom';
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { apiMovieImg } from "../../utils/constants";
 
-
-function MoviesCard() {
+function MoviesCard({ movie, saveFavoriteMovie, deleteFavoriteMovie, favoriteMovies, isSavedMoviesPage }) {
   const location = useLocation();
+  const currentUser = React.useContext(CurrentUserContext);
   const [isSaveMovie, setIsSaveMovie] = React.useState(false);
-  const card = {alt:"Название фильма"}
 
-  function handleToggleButton() {
-    setIsSaveMovie(!isSaveMovie)
+  const markedMovie = favoriteMovies.find(
+    (item) => item.nameEN === movie.nameEN && item.owner === currentUser._id
+  );
+
+  function onClick() {
+    if(!isSaveMovie) {
+      saveFavoriteMovie(movie)
+    } else {
+      const searchMovie = favoriteMovies.find(
+        (item) => item.movieId === movie.id
+      );
+      deleteFavoriteMovie(searchMovie)
+      setIsSaveMovie(false)
+    }
+  }
+
+  function deleteMovie() {
+    deleteFavoriteMovie(movie)
+  }
+
+  React.useEffect(() => {
+    if (markedMovie) {
+      setIsSaveMovie(true);
+    }
+  }, [markedMovie]);
+
+  function showDurationHour(hour) {
+    let time = `${Math.floor(hour/60)} ч.`
+    if (time === "0 ч.") {
+      return ``
+    }
+    return time;
+  }
+
+  function showDurationMin(min) {
+    let time = `${min%60} мин.`
+    if (time === "0 мин.") {
+      return ``
+    }
+    return time;
   }
 
   return (
     <li className="moviesCard">
-      <h2 className="moviesCard__title">В погоне за Бенкси</h2>
-      <p className="moviesCard__diration">27 минут</p>
-      <img className="moviesCard__image" src={img} alt={card.alt} />
-      {location.pathname === "/movies" ? (
-        <button className={`moviesCard__button ${isSaveMovie ? "" : "moviesCard__button_active"}`} type="button" onClick={handleToggleButton}>{`${isSaveMovie ? "Сохранить" : ""}`}</button>
-      ) : (
-        <button className="moviesCard__button-delete" type="button"></button>
+      <h2 className="moviesCard__title" title={movie.nameRU}>{movie.nameRU}</h2>
+      <p className="moviesCard__diration">{`${showDurationHour(movie.duration)} ${showDurationMin(movie.duration)}`}</p>
+      <a className="moviesCard__image-link" href={movie.trailerLink} target="_blank" rel="noreferrer">
+        <img className="moviesCard__image"
+          src={
+            // movie.image.url === undefined
+            //   ? movie.image
+            //   :
+              isSavedMoviesPage ? movie.image : `${apiMovieImg}${movie.image.url}`
+            }
+          alt={movie.nameRU} />
+      </a>
+
+    {/* Пока не опредилась как лучше написать, и так и так красиво */}
+      {
+        location.pathname === "/saved-movies"
+          ? <button className="moviesCard__button-delete" type="button" onClick={deleteMovie}></button>
+          : isSaveMovie
+            ? <button className="moviesCard__button_active" type="button" onClick={onClick}></button>
+            : <button className="moviesCard__button" type="button" onClick={onClick}>Сохранить</button>
+      }
+
+      {/* {location.pathname === "/movies" && !isSaveMovie && (
+        <button className="moviesCard__button" type="button" onClick={saveMovie}>Сохранить</button>
       )}
+      {location.pathname === "/movies" && isSaveMovie && (
+        <button className="moviesCard__button_active" type="button" onClick={deleteMovie}></button>
+      )}
+      {location.pathname === "/saved-movies" && (
+        <button className="moviesCard__button-delete" type="button" onClick={deleteMovie}></button>
+      )} */}
     </li>
   )
 }
