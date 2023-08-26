@@ -1,4 +1,4 @@
-<img src="./src/icons/logo.svg">
+<img src="./src/images/logo.svg">
 
 # movies-explorer-frontend
 
