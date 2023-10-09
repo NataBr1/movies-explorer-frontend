@@ -70,6 +70,6 @@ Backend https://movies.nb.nomoredomains.work
 
     `npm install`
 
-6. Запустите приложние на 3001 порту
+6. Запустите приложeние на 3001 порту
 
     `npm start`
