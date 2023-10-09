@@ -45,3 +45,31 @@ Frontend https://movies.nomoredomains.xyz
 Backend https://movies.nb.nomoredomains.work
 
 Адрес репозитория https://github.com/NataBr1/movies-explorer-api
+
+***
+
+## Инструкция по развертыванию приложения
+
+1. Клонируйте репозиторий с бэкендом
+
+    `git clone https://github.com/NataBr1/movies-explorer-api.git`
+
+2. Установите зависимости
+
+    `npm install`
+
+3. Запустите сервер
+
+    `npm run dev`
+
+4. Клонируйте репозиторий с фрондендом
+
+    `git clone https://github.com/NataBr1/movies-explorer-frontend.git`
+
+5. Установите зависимости
+
+    `npm install`
+
+6. Запустите приложние на 3001 порту
+
+    `npm start`
